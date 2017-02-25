@@ -1,0 +1,42 @@
+{
+  "name": "angularize",
+  "version": "1.0.0",
+  "description": "The easiest way to use React components in Angular 1",
+  "main": "index.js",
+  "typings": "index.d.ts",
+  "scripts": {
+    "build": "rm ./*.d.ts; tsc",
+    "pretest": "npm run build",
+    "prepublish": "npm test",
+    "test": "ava",
+    "tdd": "npm run watch & ava -w",
+    "watch": "tsc -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/coatue/angularize.git"
+  },
+  "keywords": [],
+  "author": "Boris Cherny <boris@performancejs.com>",
+  "license": "Apache2",
+  "bugs": {
+    "url": "https://github.com/coatue/angularize/issues"
+  },
+  "homepage": "https://github.com/coatue/angularize#readme",
+  "devDependencies": {
+    "ava": "^0.18.2",
+    "tslint": "^4.4.2",
+    "typescript": "^2.2.1"
+  },
+  "dependencies": {
+    "@types/angular": "^1.6.7",
+    "@types/lodash.frompairs": "^4.0.1",
+    "@types/react": "^15.0.12",
+    "@types/react-dom": "^0.14.23",
+    "angular": "^1.6.2",
+    "lodash.frompairs": "^4.0.1",
+    "ngcomponent": "^1.1.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  }
+}
