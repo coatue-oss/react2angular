@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "description": "The easiest way to use React components in Angular 1",
   "main": "index.js",
+  "main:esnext": "index.es2015.js",
   "typings": "index.d.ts",
   "scripts": {
-    "build": "rm ./*.d.ts; tsc",
+    "build": "npm run clean; tsc -d -m es2015 && mv ./index.js ./index.es2015.js && tsc -m commonjs -t es5",
+    "clean": "rm ./*.d.ts; rm ./*.map; exit 0",
     "pretest": "npm run build",
     "prepublish": "npm test",
-    "test": "ava",
-    "tdd": "npm run watch & ava -w",
-    "watch": "tsc -w"
+    "test": "karma start --single-run",
+    "tdd": "npm-run-all -pr watch:*",
+    "watch:ts": "tsc -w",
+    "watch:test": "karma start"
   },
   "repository": {
     "type": "git",
@@ -24,9 +27,24 @@
   },
   "homepage": "https://github.com/coatue/angularize#readme",
   "devDependencies": {
-    "ava": "^0.18.2",
+    "@types/angular-mocks": "^1.5.9",
+    "@types/jasmine": "^2.5.43",
+    "@types/react-addons-test-utils": "^0.14.17",
+    "angular-mocks": "^1.6.2",
+    "jasmine": "^2.5.3",
+    "karma": "^1.5.0",
+    "karma-browserify": "^5.1.1",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-mocha-reporter": "^2.2.2",
+    "karma-source-map-support": "^1.2.0",
+    "ngimport": "^0.5.2",
+    "npm-run-all": "^4.0.2",
+    "react-addons-test-utils": "^15.4.2",
+    "rollupify": "^0.3.9",
     "tslint": "^4.4.2",
-    "typescript": "^2.2.1"
+    "typescript": "^2.2.1",
+    "watchify": "^3.9.0"
   },
   "dependencies": {
     "@types/angular": "^1.6.7",

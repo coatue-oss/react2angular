@@ -1,4 +1,4 @@
-# angularize [![Build Status](https://img.shields.io/circleci/project/bcherny/angularize.svg?branch=master&style=flat-square)](https://circleci.com/gh/bcherny/angularize) [![NPM](https://img.shields.io/npm/v/angularize.svg?style=flat-square)](https://www.npmjs.com/package/angularize) [![MIT](https://img.shields.io/npm/l/angularize.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+# angularize [![Build Status](https://img.shields.io/circleci/project/coatue/angularize.svg?branch=master&style=flat-square)](https://circleci.com/gh/coatue/angularize) [![NPM](https://img.shields.io/npm/v/angularize.svg?style=flat-square)](https://www.npmjs.com/package/angularize) [![Apache2](https://img.shields.io/npm/l/angularize.svg?style=flat-square)](https://opensource.org/licenses/Apache2)
 
 > Description
 

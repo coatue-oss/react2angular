@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "declaration": true,
+    "declaration": false,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
     "lib": [
+      "dom",
       "es2015",
       "es2016.array.include"
     ],
@@ -18,5 +19,9 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "es6"
-  }
+  },
+  "files": [
+    "index.tsx",
+    "test.tsx"
+  ]
 }

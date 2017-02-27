@@ -1,1 +1,6 @@
+.DS_Store
 node_modules
+*.d.ts
+*.js
+*.map
+!karma.conf.js
