@@ -3,7 +3,7 @@ import 'angular-mocks'
 import { $rootScope } from 'ngimport'
 import * as React from 'react'
 import { Simulate } from 'react-addons-test-utils'
-import { angularize } from './'
+import { react2angular } from './'
 
 class TestOne extends React.Component<Props, void> {
   render() {
@@ -25,8 +25,8 @@ const TestTwo: React.StatelessComponent<Props> = props =>
       {props.children}
   </div>
 
-const TestAngularOne = angularize(TestOne, ['foo', 'bar', 'baz'])
-const TestAngularTwo = angularize(TestTwo, ['foo', 'bar', 'baz'])
+const TestAngularOne = react2angular(TestOne, ['foo', 'bar', 'baz'])
+const TestAngularTwo = react2angular(TestTwo, ['foo', 'bar', 'baz'])
 
 module('test', [])
   .component('testAngularOne', TestAngularOne)
@@ -40,7 +40,7 @@ interface Props {
   foo: number
 }
 
-describe('angularize', () => {
+describe('react2angular', () => {
 
   let $compile: any
 

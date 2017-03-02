@@ -12,10 +12,10 @@ import { render, unmountComponentAtNode } from 'react-dom'
  *   ```ts
  *   type Props = { foo: number }
  *   class ReactComponent extends React.Component<Props, S> {}
- *   const AngularComponent = angularize(ReactComponent, ['foo'])
+ *   const AngularComponent = react2angular(ReactComponent, ['foo'])
  *   ```
  */
-export function angularize<Props>(
+export function react2angular<Props>(
   Class: React.ComponentClass<Props> | React.SFC<Props>,
   bindingNames: (keyof Props)[]
 ): IComponentOptions {
