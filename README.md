@@ -17,25 +17,15 @@ npm install react2angular --save
 ```jsx
 import { Component } from 'react'
 
-interface Props {
-  fooBar: number
-  baz: string
-}
-
-interface State {...}
-
-class MyComponent extends Component<Props, State> {
+class MyComponent extends Component {
   render() {
     return <div>
-      <p>Foo: {this.props.fooBar}</p>
-      <p>Bar: {this.props.bar}</p>
+      <p>FooBar: {this.props.fooBar}</p>
+      <p>Baz: {this.props.baz}</p>
     </div>
   }
-  ...
 }
 ```
-
-*Note: this example uses TypeScript, but it works just as well with vanilla JavaScript, ES6, Flow, etc.*
 
 ### 2. Expose it to Angular
 
@@ -44,7 +34,7 @@ import { react2angular } from 'react2angular'
 
 angular
   .module('myModule', [])
-  .component('myComponent', react2angular(MyComponent, ['foo', 'bar']))
+  .component('myComponent', react2angular(MyComponent, ['fooBar', 'baz']))
 ```
 
 ### 3. Use it in your Angular 1 code
@@ -52,7 +42,7 @@ angular
 ```html
 <my-component
   foo-bar="3"
-  baz="'foo'"
+  baz="'baz'"
 ></my-component>
 ```
 
