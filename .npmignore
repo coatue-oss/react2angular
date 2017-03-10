@@ -1,7 +1,9 @@
 .DS_Store
 circle.yml
 node_modules
-test*
+test.js
+test.d.ts
+test.map
 karma.conf.js
 logo.png
 logo.psd
