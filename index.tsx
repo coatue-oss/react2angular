@@ -17,7 +17,7 @@ import { render, unmountComponentAtNode } from 'react-dom'
  */
 export function react2angular<Props>(
   Class: React.ComponentClass<Props> | React.SFC<Props>,
-  bindingNames: (keyof Props)[]
+  bindingNames: (keyof Props)[] = []
 ): IComponentOptions {
   return {
     bindings: fromPairs(bindingNames.map(_ => [_, '<'])),
