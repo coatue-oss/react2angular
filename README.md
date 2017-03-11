@@ -14,7 +14,7 @@ npm install react2angular --save
 
 ### 1. Create a React component
 
-```jsx
+```js
 import { Component } from 'react'
 
 class MyComponent extends Component {
