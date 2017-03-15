@@ -2,7 +2,7 @@
 
 # react2angular [![Build Status](https://img.shields.io/circleci/project/coatue/react2angular.svg?branch=master&style=flat-square)](https://circleci.com/gh/coatue/react2angular) [![NPM](https://img.shields.io/npm/v/react2angular.svg?style=flat-square)](https://www.npmjs.com/package/react2angular) [![Apache2](https://img.shields.io/npm/l/react2angular.svg?style=flat-square)](https://opensource.org/licenses/Apache2)
 
-> The easiest way to embed React components in Angular 1 apps!
+> The easiest way to embed React components in Angular 1 apps! (opposite of [angular2react](https://github.com/coatue/angular2react))
 
 ## Installation
 
