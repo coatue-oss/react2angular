@@ -32,7 +32,7 @@ module('test', [])
   .component('testAngularOne', TestAngularOne)
   .component('testAngularTwo', TestAngularTwo)
 
-bootstrap($(), ['test'])
+bootstrap($(), ['test'], { strictDi: true })
 
 interface Props {
   bar: boolean[]

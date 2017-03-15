@@ -21,7 +21,7 @@ export function react2angular<Props>(
 ): IComponentOptions {
   return {
     bindings: fromPairs(bindingNames.map(_ => [_, '<'])),
-    controller: class extends NgComponent<Props, void> {
+    controller: ['$element', class extends NgComponent<Props, void> {
       constructor(private $element: IAugmentedJQuery) {
         super()
       }
@@ -31,6 +31,6 @@ export function react2angular<Props>(
       componentWillUnmount() {
         unmountComponentAtNode(this.$element[0])
       }
-    }
+    }]
   }
 }
