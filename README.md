@@ -46,6 +46,49 @@ angular
 ></my-component>
 ```
 
+## Usage 2 (Alternative)
+
+As an alternative you can specify the propTypes in your component, and it'll be use automatically as the bindings
+
+### 1. Create a React component
+
+```js
+import { Component } from 'react'
+
+class MyComponent extends Component {
+  static propTypes = {
+    fooBar: React.PropTypes.number.isRequired,
+    baz: React.PropTypes.string.isRequired
+  }
+
+  render() {
+    return <div>
+      <p>FooBar: {this.props.fooBar}</p>
+      <p>Baz: {this.props.baz}</p>
+    </div>
+  }
+}
+```
+
+### 2. Expose it to Angular
+
+```js
+import { react2angular } from 'react2angular'
+
+angular
+  .module('myModule', [])
+  .component('myComponent', react2angular(MyComponent))
+```
+
+### 3. Use it in your Angular 1 code
+
+```html
+<my-component
+  foo-bar="3"
+  baz="'baz'"
+></my-component>
+```
+
 ## Tests
 
 ```sh
