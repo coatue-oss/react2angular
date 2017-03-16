@@ -69,33 +69,35 @@ describe('react2angular', () => {
     })
   })
 
-  it('should give an angular component', () => {
-    expect(TestAngularOne.bindings).not.toBe(undefined)
-    expect(TestAngularOne.controller).not.toBe(undefined)
-  })
-
-  it('should use the propTypes when present and no bindingNames were specified', () => {
-    const reactAngularComponent = react2angular(TestThreeWithPropTypes)
-
-    expect(reactAngularComponent.bindings).toEqual({
-      bar: '<',
-      baz: '<',
-      foo: '<'
+  describe('initialization', () => {
+    it('should give an angular component', () => {
+      expect(TestAngularOne.bindings).not.toBe(undefined)
+      expect(TestAngularOne.controller).not.toBe(undefined)
     })
-  })
 
-  it('should use the bindingNames when present over the propTypes', () => {
-    const reactAngularComponent = react2angular(TestThreeWithPropTypes, ['foo'])
+    it('should use the propTypes when present and no bindingNames were specified', () => {
+      const reactAngularComponent = react2angular(TestThreeWithPropTypes)
 
-    expect(reactAngularComponent.bindings).toEqual({
-      foo: '<'
+      expect(reactAngularComponent.bindings).toEqual({
+        bar: '<',
+        baz: '<',
+        foo: '<'
+      })
     })
-  })
 
-  it('should have empty bindings when parameter is an empty array', () => {
-    const reactAngularComponent = react2angular(TestThreeWithPropTypes, [])
+    it('should use the bindingNames when present over the propTypes', () => {
+      const reactAngularComponent = react2angular(TestThreeWithPropTypes, ['foo'])
 
-    expect(reactAngularComponent.bindings).toEqual({})
+      expect(reactAngularComponent.bindings).toEqual({
+        foo: '<'
+      })
+    })
+
+    it('should have empty bindings when parameter is an empty array', () => {
+      const reactAngularComponent = react2angular(TestThreeWithPropTypes, [])
+
+      expect(reactAngularComponent.bindings).toEqual({})
+    })
   })
 
   describe('react classes', () => {
