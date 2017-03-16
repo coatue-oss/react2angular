@@ -14,7 +14,7 @@ class TestOne extends React.Component<Props, void> {
       {this.props.children}
     </div>
   }
-  componentWillUnmount() {}
+  componentWillUnmount() { }
 }
 
 const TestTwo: React.StatelessComponent<Props> = props =>
@@ -22,8 +22,26 @@ const TestTwo: React.StatelessComponent<Props> = props =>
     <p>Foo: {props.foo}</p>
     <p>Bar: {props.bar.join(',')}</p>
     <p onClick={() => props.baz(42)}>Baz</p>
-      {props.children}
+    {props.children}
   </div>
+
+class TestThreeWithPropTypes extends React.Component<Props, void> {
+  static propTypes = {
+    bar: React.PropTypes.array.isRequired,
+    baz: React.PropTypes.func.isRequired,
+    foo: React.PropTypes.number.isRequired
+  }
+
+  render() {
+    return <div>
+      <p>Foo: {this.props.foo}</p>
+      <p>Bar: {this.props.bar.join(',')}</p>
+      <p onClick={() => this.props.baz(42)}>Baz</p>
+      {this.props.children}
+    </div>
+  }
+  componentWillUnmount() { }
+}
 
 const TestAngularOne = react2angular(TestOne, ['foo', 'bar', 'baz'])
 const TestAngularTwo = react2angular(TestTwo, ['foo', 'bar', 'baz'])
@@ -46,14 +64,40 @@ describe('react2angular', () => {
 
   beforeEach(() => {
     mock.module('test')
-    mock.inject(function(_$compile_: ICompileService) {
+    mock.inject(function (_$compile_: ICompileService) {
       $compile = _$compile_
     })
   })
 
-  it('should give an angular component', () => {
-    expect(TestAngularOne.bindings).not.toBe(undefined)
-    expect(TestAngularOne.controller).not.toBe(undefined)
+  describe('initialization', () => {
+    it('should give an angular component', () => {
+      expect(TestAngularOne.bindings).not.toBe(undefined)
+      expect(TestAngularOne.controller).not.toBe(undefined)
+    })
+
+    it('should use the propTypes when present and no bindingNames were specified', () => {
+      const reactAngularComponent = react2angular(TestThreeWithPropTypes)
+
+      expect(reactAngularComponent.bindings).toEqual({
+        bar: '<',
+        baz: '<',
+        foo: '<'
+      })
+    })
+
+    it('should use the bindingNames when present over the propTypes', () => {
+      const reactAngularComponent = react2angular(TestThreeWithPropTypes, ['foo'])
+
+      expect(reactAngularComponent.bindings).toEqual({
+        foo: '<'
+      })
+    })
+
+    it('should have empty bindings when parameter is an empty array', () => {
+      const reactAngularComponent = react2angular(TestThreeWithPropTypes, [])
+
+      expect(reactAngularComponent.bindings).toEqual({})
+    })
   })
 
   describe('react classes', () => {
@@ -160,7 +204,7 @@ describe('react2angular', () => {
     })
 
     // TODO: figure out how to test this
-    xit('should destroy', () => {})
+    xit('should destroy', () => { })
 
     it('should take callbacks', () => {
       const baz = jasmine.createSpy('baz')

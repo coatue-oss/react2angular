@@ -17,10 +17,14 @@ import { render, unmountComponentAtNode } from 'react-dom'
  */
 export function react2angular<Props>(
   Class: React.ComponentClass<Props> | React.SFC<Props>,
-  bindingNames: (keyof Props)[] = []
+  bindingNames?: (keyof Props)[]
 ): IComponentOptions {
+  const names = bindingNames
+    || (Class.propTypes && Object.keys(Class.propTypes))
+    || []
+
   return {
-    bindings: fromPairs(bindingNames.map(_ => [_, '<'])),
+    bindings: fromPairs(names.map(_ => [_, '<'])),
     controller: ['$element', class extends NgComponent<Props, void> {
       constructor(private $element: IAugmentedJQuery) {
         super()

@@ -18,6 +18,11 @@ npm install react2angular --save
 import { Component } from 'react'
 
 class MyComponent extends Component {
+  static propTypes = {
+    fooBar: React.PropTypes.number.isRequired,
+    baz: React.PropTypes.string.isRequired
+  }
+
   render() {
     return <div>
       <p>FooBar: {this.props.fooBar}</p>
@@ -29,11 +34,20 @@ class MyComponent extends Component {
 
 ### 2. Expose it to Angular
 
+When propTypes are specified, they'll be used as the component's bindings, so it's no necessary to add them again.
+
 ```js
 import { react2angular } from 'react2angular'
 
 angular
   .module('myModule', [])
+  .component('myComponent', react2angular(MyComponent))
+```
+
+As an alternative you can pass the bindings and they'll override the use of propTypes.
+
+```js
+  // ...  
   .component('myComponent', react2angular(MyComponent, ['fooBar', 'baz']))
 ```
 
