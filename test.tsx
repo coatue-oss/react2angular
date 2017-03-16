@@ -28,7 +28,7 @@ const TestTwo: React.StatelessComponent<Props> = props =>
 const TestAngularOne = react2angular(TestOne, ['foo', 'bar', 'baz'])
 const TestAngularTwo = react2angular(TestTwo, ['foo', 'bar', 'baz'])
 
-module('test', [])
+module('test', ['bcherny/ngimport'])
   .component('testAngularOne', TestAngularOne)
   .component('testAngularTwo', TestAngularTwo)
 

@@ -1,6 +1,6 @@
 {
   "name": "react2angular",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "The easiest way to embed React components in Angular 1 apps!",
   "main": "index.js",
   "main:esnext": "index.es2015.js",
@@ -38,7 +38,7 @@
     "karma-jasmine": "^1.1.0",
     "karma-mocha-reporter": "^2.2.2",
     "karma-source-map-support": "^1.2.0",
-    "ngimport": "^0.5.2",
+    "ngimport": "^0.6.0",
     "npm-run-all": "^4.0.2",
     "react-addons-test-utils": "^15.4.2",
     "rollupify": "^0.3.9",
