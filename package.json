@@ -6,8 +6,8 @@
   "main:esnext": "index.es2015.js",
   "typings": "index.d.ts",
   "scripts": {
-    "build": "npm run clean; tsc -d -m es2015 && mv ./index.js ./index.es2015.js && tsc -m commonjs -t es5",
-    "clean": "rm ./*.d.ts; rm ./*.map; exit 0",
+    "build": "npm run clean && tsc -d -m es2015 && mv ./index.js ./index.es2015.js && tsc -m commonjs -t es5",
+    "clean": "rm -f ./*.d.ts && rm -f ./*.map && exit 0",
     "pretest": "npm run build",
     "prepublish": "npm test",
     "test": "karma start --single-run",
