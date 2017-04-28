@@ -2,7 +2,7 @@ import { bootstrap, element as $, ICompileService, mock, module } from 'angular'
 import 'angular-mocks'
 import { $rootScope } from 'ngimport'
 import * as React from 'react'
-import { Simulate } from 'react-addons-test-utils'
+import { Simulate } from 'react-dom/test-utils'
 import { react2angular } from './'
 
 class TestOne extends React.Component<Props, void> {

@@ -1,5 +1,5 @@
 import { IAugmentedJQuery, IComponentOptions } from 'angular'
-import { fromPairs } from 'lodash'
+import fromPairs = require('lodash.frompairs')
 import NgComponent from 'ngcomponent'
 import * as React from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
@@ -30,7 +30,8 @@ export function react2angular<Props>(
         super()
       }
       render() {
-        render(<Class {...this.props} />, this.$element[0])
+        // TODO: rm any when https://github.com/Microsoft/TypeScript/pull/13288 is merged
+        render(<Class {...(this.props as any)} />, this.$element[0])
       }
       componentWillUnmount() {
         unmountComponentAtNode(this.$element[0])
