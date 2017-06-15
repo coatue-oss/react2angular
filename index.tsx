@@ -1,5 +1,4 @@
 import { IAugmentedJQuery, IComponentOptions } from 'angular'
-import fromPairs = require('lodash.frompairs')
 import NgComponent from 'ngcomponent'
 import * as React from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
@@ -24,7 +23,10 @@ export function react2angular<Props>(
     || []
 
   return {
-    bindings: fromPairs(names.map(_ => [_, '<'])),
+    bindings: names.map(_ => [_, '<']).reduce((acc, pair) => {
+      acc[pair[0]] = pair[1]
+      return acc
+    }, {} as any),
     controller: ['$element', class extends NgComponent<Props, void> {
       constructor(private $element: IAugmentedJQuery) {
         super()
