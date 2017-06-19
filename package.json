@@ -39,7 +39,7 @@
     "karma-source-map-support": "^1.2.0",
     "ngimport": "^0.6.1",
     "npm-run-all": "^4.0.2",
-    "rollupify": "^0.3.9",
+    "rollupify": "^0.4.0",
     "tslint": "^5.1.0",
     "typescript": "^2.3.1",
     "watchify": "^3.9.0"
