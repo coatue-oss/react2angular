@@ -5,7 +5,7 @@ import * as React from 'react'
 import { Simulate } from 'react-dom/test-utils'
 import { react2angular } from './'
 
-class TestOne extends React.Component<Props, void> {
+class TestOne extends React.Component<Props> {
   render() {
     return <div>
       <p>Foo: {this.props.foo}</p>
@@ -25,7 +25,16 @@ const TestTwo: React.StatelessComponent<Props> = props =>
     {props.children}
   </div>
 
-class TestThreeWithPropTypes extends React.Component<Props, void> {
+const TestThree: React.StatelessComponent = () =>
+  <div>Foo</div>
+
+class TestFour extends React.Component<Props> {
+  render() {
+    return <div>Foo</div>
+  }
+}
+
+class TestFive extends React.Component<Props> {
   static propTypes = {
     bar: React.PropTypes.array.isRequired,
     baz: React.PropTypes.func.isRequired,
@@ -45,10 +54,14 @@ class TestThreeWithPropTypes extends React.Component<Props, void> {
 
 const TestAngularOne = react2angular(TestOne, ['foo', 'bar', 'baz'])
 const TestAngularTwo = react2angular(TestTwo, ['foo', 'bar', 'baz'])
+const TestAngularThree = react2angular(TestThree)
+const TestAngularFour = react2angular(TestFour)
 
 module('test', ['bcherny/ngimport'])
   .component('testAngularOne', TestAngularOne)
   .component('testAngularTwo', TestAngularTwo)
+  .component('testAngularThree', TestAngularThree)
+  .component('testAngularFour', TestAngularFour)
 
 bootstrap($(), ['test'], { strictDi: true })
 
@@ -76,7 +89,7 @@ describe('react2angular', () => {
     })
 
     it('should use the propTypes when present and no bindingNames were specified', () => {
-      const reactAngularComponent = react2angular(TestThreeWithPropTypes)
+      const reactAngularComponent = react2angular(TestFive)
 
       expect(reactAngularComponent.bindings).toEqual({
         bar: '<',
@@ -86,7 +99,7 @@ describe('react2angular', () => {
     })
 
     it('should use the bindingNames when present over the propTypes', () => {
-      const reactAngularComponent = react2angular(TestThreeWithPropTypes, ['foo'])
+      const reactAngularComponent = react2angular(TestFive, ['foo'])
 
       expect(reactAngularComponent.bindings).toEqual({
         foo: '<'
@@ -94,9 +107,12 @@ describe('react2angular', () => {
     })
 
     it('should have empty bindings when parameter is an empty array', () => {
-      const reactAngularComponent = react2angular(TestThreeWithPropTypes, [])
-
+      const reactAngularComponent = react2angular(TestFive, [])
       expect(reactAngularComponent.bindings).toEqual({})
+    })
+
+    it('should have empty bindings when parameter is not passed', () => {
+      expect(react2angular(TestThree).bindings).toEqual({})
     })
   })
 
@@ -112,6 +128,14 @@ describe('react2angular', () => {
       $compile(element)(scope)
       $rootScope.$apply()
       expect(element.find('p').length).toBe(3)
+    })
+
+    it('should render (even if the component takes no props)', () => {
+      const scope = $rootScope.$new(true)
+      const element = $(`<test-angular-four></test-angular-four>`)
+      $compile(element)(scope)
+      $rootScope.$apply()
+      expect(element.text()).toBe('Foo')
     })
 
     it('should update', () => {
@@ -185,6 +209,14 @@ describe('react2angular', () => {
       $compile(element)(scope)
       $rootScope.$apply()
       expect(element.find('p').length).toBe(3)
+    })
+
+    it('should render (even if the component takes no props)', () => {
+      const scope = $rootScope.$new(true)
+      const element = $(`<test-angular-three></test-angular-three>`)
+      $compile(element)(scope)
+      $rootScope.$apply()
+      expect(element.text()).toBe('Foo')
     })
 
     it('should update', () => {
