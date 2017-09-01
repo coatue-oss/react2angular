@@ -7,7 +7,7 @@
 ## Installation
 
 ```sh
-npm install react2angular --save
+npm install react2angular react react-dom prop-types --save
 ```
 
 ## Usage
