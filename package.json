@@ -26,6 +26,10 @@
     "url": "https://github.com/coatue-oss/react2angular/issues"
   },
   "homepage": "https://github.com/coatue-oss/react2angular#readme",
+  "peerDependencies": {
+    "react": ">=15",
+    "react-dom": ">=15"
+  },
   "devDependencies": {
     "@types/angular-mocks": "^1.5.10",
     "@types/jasmine": "^2.5.53",
@@ -43,7 +47,9 @@
     "rollupify": "^0.4.0",
     "tslint": "^5.5.0",
     "typescript": "^2.4.2",
-    "watchify": "^3.9.0"
+    "watchify": "^3.9.0",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
   },
   "dependencies": {
     "@types/angular": "^1.6.28",
@@ -52,8 +58,6 @@
     "@types/react-dom": "^15.5.1",
     "angular": ">=1.6.5",
     "lodash.frompairs": "^4.0.1",
-    "ngcomponent": "^3.0.2",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "ngcomponent": "^3.0.2"
   }
 }
