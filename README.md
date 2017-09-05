@@ -55,6 +55,20 @@ If `propTypes` are defined and you passed in a 2nd argument, the argument will o
 ></my-component>
 ```
 
+You can also transclude HTML content which will be rendered as children of the React component.
+
+```html
+<my-component
+  foo="3"
+  baz="'baz'">
+    <span>This is transcluded</span>
+    <p>And this!</p>
+    <my-other-component
+      bar="'bar'">
+    </my-other-component>
+</my-component>
+```
+
 ## Tests
 
 ```sh
