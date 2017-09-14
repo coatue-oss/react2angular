@@ -58,7 +58,7 @@
     "@types/lodash.frompairs": "^4.0.2",
     "@types/react": "^16.0.0",
     "@types/react-dom": "^15.5.1",
-    "angular": ">=1.6.5",
+    "angular": ">=1.5.8",
     "lodash.frompairs": "^4.0.1",
     "ngcomponent": "^3.0.2"
   }
