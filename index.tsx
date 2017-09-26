@@ -25,7 +25,7 @@ export function react2angular<Props>(
 
   return {
     bindings: fromPairs(names.map(_ => [_, '<'])),
-    controller: ['$element', class extends NgComponent<Props, void> {
+    controller: ['$element', class extends NgComponent<Props> {
       constructor(private $element: IAugmentedJQuery) {
         super()
       }

@@ -7,6 +7,10 @@
 ## Installation
 
 ```sh
+# Using Yarn:
+yarn add react2angular react react-dom prop-types
+
+# Or, using NPM:
 npm install react2angular react react-dom prop-types --save
 ```
 
