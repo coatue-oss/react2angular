@@ -43,7 +43,7 @@
     "karma-jasmine": "^1.1.0",
     "karma-mocha-reporter": "^2.2.3",
     "karma-source-map-support": "^1.2.0",
-    "ngimport": "^0.7.2",
+    "ngimport": "^0.8.0",
     "npm-run-all": "^4.0.2",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
