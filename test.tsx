@@ -115,6 +115,18 @@ describe('react2angular', () => {
     it('should have empty bindings when parameter is not passed', () => {
       expect(react2angular(TestThree).bindings).toEqual({})
     })
+
+    it('should use the injectNames for DI', () => {
+      const defaultDi = (react2angular(TestThree).controller as any).slice(0, -1)
+      const injectedDi = (react2angular(TestThree, null, ['foo', 'bar']).controller as any).slice(0, -1)
+      expect(injectedDi).toEqual(defaultDi.concat(['foo', 'bar']))
+    })
+
+    it('should have default DI specifications if injectNames is empty', () => {
+      const defaultDi = (react2angular(TestThree).controller as any).slice(0, -1)
+      const injectedDi = (react2angular(TestThree, null, []).controller as any).slice(0, -1)
+      expect(injectedDi).toEqual(defaultDi)
+    })
   })
 
   describe('react classes', () => {
