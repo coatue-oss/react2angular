@@ -1,6 +1,6 @@
 import { bootstrap, element as $, ICompileService, mock, module } from 'angular'
 import 'angular-mocks'
-import { $rootScope } from 'ngimport'
+import { $rootScope, $http } from 'ngimport'
 import * as React from 'react'
 import * as PropTypes from 'prop-types'
 import { Simulate } from 'react-dom/test-utils'
@@ -53,16 +53,56 @@ class TestFive extends React.Component<Props> {
   componentWillUnmount() { }
 }
 
+class TestSixService {
+  constructor(private $q: any) {}
+
+  foo() {
+    return this.$q.resolve('testSixService result')
+  }
+}
+
+class TestSix extends React.Component<any> {
+  state = {
+    $http: '',
+    $element: '',
+    testSixService: '',
+  }
+
+  render() {
+    return <div>
+      <p>{this.state.$http}</p>
+      <p>{this.state.$element}</p>
+      <p>{this.state.testSixService}</p>
+      <span>$element result</span>
+    </div>
+  }
+
+  componentDidMount() {
+    this.props.$http.get('https://example.com/').then((result: string) => {
+      this.setState({ $http: result })
+    })
+    this.setState({
+      $element: this.props.$element.find('span').text(),
+    })
+    this.props.testSixService.foo().then((result: string) => {
+      this.setState({ testSixService: result })
+    })
+  }
+}
+
 const TestAngularOne = react2angular(TestOne, ['foo', 'bar', 'baz'])
 const TestAngularTwo = react2angular(TestTwo, ['foo', 'bar', 'baz'])
 const TestAngularThree = react2angular(TestThree)
 const TestAngularFour = react2angular(TestFour)
+const TestAngularSix = react2angular(TestSix, null, ['$http', '$element', 'testSixService'])
 
 module('test', ['bcherny/ngimport'])
   .component('testAngularOne', TestAngularOne)
   .component('testAngularTwo', TestAngularTwo)
   .component('testAngularThree', TestAngularThree)
   .component('testAngularFour', TestAngularFour)
+  .service('testSixService', ['$q', TestSixService])
+  .component('testAngularSix', TestAngularSix)
 
 bootstrap($(), ['test'], { strictDi: true })
 
@@ -206,6 +246,23 @@ describe('react2angular', () => {
       $compile(element)(scope)
       $rootScope.$apply()
       expect(element.find('span').length).toBe(0)
+    })
+
+    it('should take injected props', (done) => {
+      const scope = $rootScope.$new(true)
+      spyOn($http, 'get').and.returnValue(Promise.resolve('$http response'))
+
+      const element = $(`<test-angular-six></test-angular-six>`)
+      $compile(element)(scope)
+      $rootScope.$apply()
+
+      setTimeout(() => {
+        expect($http.get).toHaveBeenCalledWith('https://example.com/')
+        expect(element.find('p').eq(0).text()).toBe('$http response', '$http is injected')
+        expect(element.find('p').eq(1).text()).toBe('$element result', '$element is injected')
+        expect(element.find('p').eq(2).text()).toBe('testSixService result', 'testSixService is injected')
+        done()
+      }, 0)
     })
 
   })
