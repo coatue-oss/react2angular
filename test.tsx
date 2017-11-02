@@ -73,6 +73,7 @@ class TestSix extends React.Component<any> {
       <p>{this.state.$http}</p>
       <p>{this.state.$element}</p>
       <p>{this.state.testSixService}</p>
+      <p>{this.props.foo}</p>
       <span>$element result</span>
     </div>
   }
@@ -90,11 +91,22 @@ class TestSix extends React.Component<any> {
   }
 }
 
+class TestSeven extends React.Component<any> {
+  static propTypes = {
+    foo: React.PropTypes.string.isRequired
+  }
+
+  render() {
+    return <p>{this.props.foo}</p>
+  }
+}
+
 const TestAngularOne = react2angular(TestOne, ['foo', 'bar', 'baz'])
 const TestAngularTwo = react2angular(TestTwo, ['foo', 'bar', 'baz'])
 const TestAngularThree = react2angular(TestThree)
 const TestAngularFour = react2angular(TestFour)
-const TestAngularSix = react2angular(TestSix, null, ['$http', '$element', 'testSixService'])
+const TestAngularSix = react2angular(TestSix, ['foo'], ['$http', '$element', 'testSixService', 'foo'])
+const TestAngularSeven = react2angular(TestSeven, null, ['foo'])
 
 module('test', ['bcherny/ngimport'])
   .component('testAngularOne', TestAngularOne)
@@ -102,7 +114,9 @@ module('test', ['bcherny/ngimport'])
   .component('testAngularThree', TestAngularThree)
   .component('testAngularFour', TestAngularFour)
   .service('testSixService', ['$q', TestSixService])
+  .constant('foo', 'CONSTANT FOO')
   .component('testAngularSix', TestAngularSix)
+  .component('testAngularSeven', TestAngularSeven)
 
 bootstrap($(), ['test'], { strictDi: true })
 
@@ -249,18 +263,28 @@ describe('react2angular', () => {
     })
 
     it('should take injected props', (done) => {
-      const scope = $rootScope.$new(true)
       spyOn($http, 'get').and.returnValue(Promise.resolve('$http response'))
+      const scope = Object.assign($rootScope.$new(true), {
+        foo: 'FOO',
+      })
 
-      const element = $(`<test-angular-six></test-angular-six>`)
-      $compile(element)(scope)
+      const element1 = $(`<test-angular-six foo="foo"></test-angular-six>`)
+      $compile(element1)(scope)
+
+      const element2 = $(`<test-angular-seven foo="foo"></test-angular-seven>`)
+      $compile(element2)(scope)
+
       $rootScope.$apply()
 
       setTimeout(() => {
         expect($http.get).toHaveBeenCalledWith('https://example.com/')
-        expect(element.find('p').eq(0).text()).toBe('$http response', '$http is injected')
-        expect(element.find('p').eq(1).text()).toBe('$element result', '$element is injected')
-        expect(element.find('p').eq(2).text()).toBe('testSixService result', 'testSixService is injected')
+        expect(element1.find('p').eq(0).text()).toBe('$http response', '$http is injected')
+        expect(element1.find('p').eq(1).text()).toBe('$element result', '$element is injected')
+        expect(element1.find('p').eq(2).text()).toBe('testSixService result', 'testSixService is injected')
+        expect(element1.find('p').eq(3).text()).toBe('FOO', 'bindingNames overrides injectedProps')
+
+        expect(element2.find('p').text()).toBe('FOO', 'propTypes overrides injectedProps')
+
         done()
       }, 0)
     })
