@@ -27,10 +27,13 @@ export function react2angular<Props>(
   return {
     bindings: fromPairs(names.map(_ => [_, '<'])),
     controller: ['$element', ...injectNames, class extends NgComponent<Props> {
-      injectedProps: any[];
+      injectedProps: { [name: string]: any }
       constructor(private $element: IAugmentedJQuery, ...injectedProps: any[]) {
         super()
-        this.injectedProps = injectedProps;
+        this.injectedProps = {}
+        injectNames.forEach((name, i) => {
+          this.injectedProps[name] = injectedProps[i]
+        })
       }
       render() {
         // TODO: rm any when https://github.com/Microsoft/TypeScript/pull/13288 is merged
