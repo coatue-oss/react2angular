@@ -46,7 +46,7 @@
     "ngimport": "^0.7.2",
     "npm-run-all": "^4.0.2",
     "prop-types": "^15.5.10",
-    "react": "^15.6.1",
+    "react": "^16.1.0",
     "react-dom": "^15.6.1",
     "rollupify": "^0.4.0",
     "tslint": "^5.7.0",
