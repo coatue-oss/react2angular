@@ -2,6 +2,7 @@ import { bootstrap, element as $, ICompileService, mock, module } from 'angular'
 import 'angular-mocks'
 import { $rootScope } from 'ngimport'
 import * as React from 'react'
+import * as PropTypes from 'prop-types'
 import { Simulate } from 'react-dom/test-utils'
 import { react2angular } from './'
 
@@ -36,9 +37,9 @@ class TestFour extends React.Component<Props> {
 
 class TestFive extends React.Component<Props> {
   static propTypes = {
-    bar: React.PropTypes.array.isRequired,
-    baz: React.PropTypes.func.isRequired,
-    foo: React.PropTypes.number.isRequired
+    bar: PropTypes.array.isRequired,
+    baz: PropTypes.func.isRequired,
+    foo: PropTypes.number.isRequired
   }
 
   render() {
