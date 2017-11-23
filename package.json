@@ -27,6 +27,9 @@
   },
   "homepage": "https://github.com/coatue-oss/react2angular#readme",
   "peerDependencies": {
+    "@types/prop-types": "^15.5.2",
+    "@types/react": "^16.0.0",
+    "@types/react-dom": "^16.0.0",
     "prop-types": ">=15",
     "react": ">=15",
     "react-dom": ">=15"
@@ -35,6 +38,9 @@
     "@types/angular-mocks": ">=1.5",
     "@types/jasmine": "^2.5.53",
     "@types/jquery": "^3.2.10",
+    "@types/prop-types": "^15.5.2",
+    "@types/react": "^16.0.0",
+    "@types/react-dom": "^16.0.0",
     "angular-mocks": ">=1.5",
     "jasmine": "^2.8.0",
     "karma": "^1.7.0",
@@ -56,8 +62,6 @@
   "dependencies": {
     "@types/angular": ">=1.5",
     "@types/lodash.frompairs": "^4.0.3",
-    "@types/react": "^16.0.0",
-    "@types/react-dom": "^16.0.0",
     "angular": ">=1.5.11",
     "lodash.frompairs": "^4.0.1",
     "ngcomponent": "^4.0.1"
