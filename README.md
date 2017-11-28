@@ -19,9 +19,9 @@ npm install react2angular react react-dom prop-types --save
 ### 1. Create a React component
 
 ```js
-import { Component } from 'react'
+import React from 'react'
 
-class MyComponent extends Component {
+class MyComponent extends React.Component {
   render() {
     return <div>
       <p>FooBar: {this.props.fooBar}</p>
