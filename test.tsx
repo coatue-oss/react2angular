@@ -93,7 +93,7 @@ class TestSix extends React.Component<any> {
 
 class TestSeven extends React.Component<any> {
   static propTypes = {
-    foo: React.PropTypes.string.isRequired
+    foo: PropTypes.string.isRequired
   }
 
   render() {
