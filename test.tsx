@@ -1,8 +1,8 @@
-import { bootstrap, element as $, ICompileService, mock, module } from 'angular'
+import { bootstrap, element as $, IAugmentedJQuery, ICompileService, IHttpService, IQService, mock, module } from 'angular'
 import 'angular-mocks'
-import { $rootScope, $http } from 'ngimport'
-import * as React from 'react'
+import { $http, $q, $rootScope } from 'ngimport'
 import * as PropTypes from 'prop-types'
+import * as React from 'react'
 import { Simulate } from 'react-dom/test-utils'
 import { react2angular } from './'
 
@@ -54,24 +54,30 @@ class TestFive extends React.Component<Props> {
 }
 
 class TestSixService {
-  constructor(private $q: any) {}
+  constructor(private $q: IQService) { }
 
   foo() {
     return this.$q.resolve('testSixService result')
   }
 }
 
-class TestSix extends React.Component<any> {
+type DIProps = {
+  $element: IAugmentedJQuery
+  $http: IHttpService
+  testSixService: TestSixService
+}
+
+class TestSix extends React.Component<Props & DIProps> {
   state = {
-    $http: '',
-    $element: '',
-    testSixService: '',
+    elementText: '',
+    result: '',
+    testSixService: ''
   }
 
   render() {
     return <div>
-      <p>{this.state.$http}</p>
-      <p>{this.state.$element}</p>
+      <p>{this.state.result}</p>
+      <p>{this.state.elementText}</p>
       <p>{this.state.testSixService}</p>
       <p>{this.props.foo}</p>
       <span>$element result</span>
@@ -79,19 +85,19 @@ class TestSix extends React.Component<any> {
   }
 
   componentDidMount() {
-    this.props.$http.get('https://example.com/').then((result: string) => {
-      this.setState({ $http: result })
-    })
     this.setState({
-      $element: this.props.$element.find('span').text(),
+      elementText: this.props.$element.find('span').text()
     })
-    this.props.testSixService.foo().then((result: string) => {
-      this.setState({ testSixService: result })
-    })
+    this.props.$http.get('https://example.com/').then(_ =>
+      this.setState({ result: _.data })
+    )
+    this.props.testSixService.foo().then(_ =>
+      this.setState({ testSixService: _ })
+    )
   }
 }
 
-class TestSeven extends React.Component<any> {
+class TestSeven extends React.Component<Props> {
   static propTypes = {
     foo: PropTypes.string.isRequired
   }
@@ -132,7 +138,7 @@ describe('react2angular', () => {
 
   beforeEach(() => {
     mock.module('test')
-    mock.inject(function (_$compile_: ICompileService) {
+    mock.inject(function(_$compile_: ICompileService) {
       $compile = _$compile_
     })
   })
@@ -262,10 +268,10 @@ describe('react2angular', () => {
       expect(element.find('span').length).toBe(0)
     })
 
-    it('should take injected props', (done) => {
-      spyOn($http, 'get').and.returnValue(Promise.resolve('$http response'))
+    it('should take injected props', () => {
+      spyOn($http, 'get').and.returnValue($q.resolve({ data: '$http response' }))
       const scope = Object.assign($rootScope.$new(true), {
-        foo: 'FOO',
+        foo: 'FOO'
       })
 
       const element1 = $(`<test-angular-six foo="foo"></test-angular-six>`)
@@ -276,17 +282,12 @@ describe('react2angular', () => {
 
       $rootScope.$apply()
 
-      setTimeout(() => {
-        expect($http.get).toHaveBeenCalledWith('https://example.com/')
-        expect(element1.find('p').eq(0).text()).toBe('$http response', '$http is injected')
-        expect(element1.find('p').eq(1).text()).toBe('$element result', '$element is injected')
-        expect(element1.find('p').eq(2).text()).toBe('testSixService result', 'testSixService is injected')
-        expect(element1.find('p').eq(3).text()).toBe('FOO', 'bindingNames overrides injectedProps')
-
-        expect(element2.find('p').text()).toBe('FOO', 'propTypes overrides injectedProps')
-
-        done()
-      }, 0)
+      expect($http.get).toHaveBeenCalledWith('https://example.com/')
+      expect(element1.find('p').eq(0).text()).toBe('$http response', '$http is injected')
+      expect(element1.find('p').eq(1).text()).toBe('$element result', '$element is injected')
+      expect(element1.find('p').eq(2).text()).toBe('testSixService result', 'testSixService is injected')
+      expect(element1.find('p').eq(3).text()).toBe('FOO', 'bindingNames overrides injectedProps')
+      expect(element2.find('p').text()).toBe('FOO', 'propTypes overrides injectedProps')
     })
 
   })
