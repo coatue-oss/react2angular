@@ -17,7 +17,8 @@ import { render, unmountComponentAtNode } from 'react-dom'
  */
 export function react2angular<Props>(
   Class: React.ComponentClass<Props> | React.SFC<Props>,
-  bindingNames?: (keyof Props)[]
+  bindingNames: (keyof Props)[] | null = null,
+  injectNames: string[] = []
 ): IComponentOptions {
   const names = bindingNames
     || (Class.propTypes && Object.keys(Class.propTypes))
@@ -25,13 +26,18 @@ export function react2angular<Props>(
 
   return {
     bindings: fromPairs(names.map(_ => [_, '<'])),
-    controller: ['$element', class extends NgComponent<Props> {
-      constructor(private $element: IAugmentedJQuery) {
+    controller: ['$element', ...injectNames, class extends NgComponent<Props> {
+      injectedProps: { [name: string]: any }
+      constructor(private $element: IAugmentedJQuery, ...injectedProps: any[]) {
         super()
+        this.injectedProps = {}
+        injectNames.forEach((name, i) => {
+          this.injectedProps[name] = injectedProps[i]
+        })
       }
       render() {
         // TODO: rm any when https://github.com/Microsoft/TypeScript/pull/13288 is merged
-        render(<Class {...(this.props as any)} />, this.$element[0])
+        render(<Class {...this.injectedProps} {...(this.props as any)} />, this.$element[0])
       }
       componentWillUnmount() {
         unmountComponentAtNode(this.$element[0])
