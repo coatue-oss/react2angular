@@ -59,6 +59,37 @@ If `propTypes` are defined and you passed in a 2nd argument, the argument will o
 ></my-component>
 ```
 
+## Dependency Injection
+
+It's easy to pass services/constants/etc. to your React component: just pass them in as the 3rd argument, and they will be available in your component's Props. For example:
+
+```js
+import { Component } from 'react'
+import { react2angular } from 'react2angular'
+
+class MyComponent extends Component {
+  state = {
+    data: ''
+  }
+  componentDidMount() {
+    this.props.$http.get('/path').then(res =>
+      this.setState({ data: res.data })
+    )
+  }
+  render() {
+    return <div>
+      { this.props.FOO }
+      { this.state.data }
+    </div>
+  }
+}
+
+angular
+  .module('myModule', [])
+  .constant('FOO', 'FOO!')
+  .component('myComponent', react2angular(MyComponent, [], ['$http', 'FOO'))
+```
+
 ## Tests
 
 ```sh
