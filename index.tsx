@@ -25,7 +25,7 @@ export function react2angular<Props>(
     || []
 
   return {
-    bindings: fromPairs(names.map(_ => [_, '<'])),
+    bindings: fromPairs(names.map(_ => [_, '<?'])),
     controller: ['$element', ...injectNames, class extends NgComponent<Props> {
       injectedProps: { [name: string]: any }
       constructor(private $element: IAugmentedJQuery, ...injectedProps: any[]) {
