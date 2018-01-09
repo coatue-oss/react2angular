@@ -153,8 +153,8 @@ describe('react2angular', () => {
       const reactAngularComponent = react2angular(TestFive)
 
       expect(reactAngularComponent.bindings).toEqual({
-        bar: '<',
-        baz: '<',
+        bar: '<?',
+        baz: '<?',
         foo: '<'
       })
     })
@@ -163,7 +163,7 @@ describe('react2angular', () => {
       const reactAngularComponent = react2angular(TestFive, ['foo'])
 
       expect(reactAngularComponent.bindings).toEqual({
-        foo: '<'
+        foo: '<?'
       })
     })
 
