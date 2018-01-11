@@ -21,7 +21,7 @@ export function react2angular<Props>(
   injectNames: string[] = []
 ): IComponentOptions {
   const names: {name:string, optional:boolean}[] = (bindingNames && (bindingNames as any[]).map(_ => _.name?_:{name:_, optional: false}))
-    || (Class.propTypes && Object.keys(Class.propTypes).map(_ => ({name: _, optional: !Class.propTypes[_].isRequired})))
+    || (Class.propTypes && Object.keys(Class.propTypes).map(_ => ({name: _, optional: !(Class.propTypes[_] as any).isRequired})))
     || []
 
   return {
