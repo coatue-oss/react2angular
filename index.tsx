@@ -17,7 +17,7 @@ import { render, unmountComponentAtNode } from 'react-dom'
  */
 export function react2angular<Props>(
   Class: React.ComponentClass<Props> | React.SFC<Props>,
-  bindingNames: {name: string, optional:boolean}[] | string[] | null = null,
+  bindingNames: ({name: string, optional:boolean}|string)[] | null = null,
   injectNames: string[] = []
 ): IComponentOptions {
   const names: {name:string, optional:boolean}[] = (bindingNames && (bindingNames as any[]).map(_ => _.name?_:{name:_, optional: false}))

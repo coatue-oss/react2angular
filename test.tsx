@@ -179,7 +179,9 @@ describe('react2angular', () => {
                                                              'baz'])
 
       expect(reactAngularComponent.bindings).toEqual({
-        foo: '<'
+        foo: '<?',
+        bar: '<',
+        baz: '<'
       })
 
     })
