@@ -17,15 +17,15 @@ import { render, unmountComponentAtNode } from 'react-dom'
  */
 export function react2angular<Props>(
   Class: React.ComponentClass<Props> | React.SFC<Props>,
-  bindingNames: (keyof Props)[] | null = null,
+  bindingNames: {name: string, optional:boolean}[] | string[] | null = null,
   injectNames: string[] = []
 ): IComponentOptions {
-  const names = bindingNames
-    || (Class.propTypes && Object.keys(Class.propTypes))
+  const names: {name:string, optional:boolean}[] = (bindingNames && (bindingNames as any[]).map(_ => _.name?_:{name:_, optional: false}))
+    || (Class.propTypes && Object.keys(Class.propTypes).map(_ => ({name: _, optional: !Class.propTypes[_].isRequired})))
     || []
 
   return {
-    bindings: fromPairs(names.map(_ => [_, '<?'])),
+    bindings: fromPairs(names.map(_ => [_.name, _.optional?'<?':'<'])),
     controller: ['$element', ...injectNames, class extends NgComponent<Props> {
       injectedProps: { [name: string]: any }
       constructor(private $element: IAugmentedJQuery, ...injectedProps: any[]) {

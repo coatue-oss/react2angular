@@ -39,7 +39,10 @@ class TestFive extends React.Component<Props> {
   static propTypes = {
     bar: PropTypes.array.isRequired,
     baz: PropTypes.func.isRequired,
-    foo: PropTypes.number.isRequired
+    foo: PropTypes.number.isRequired,
+    baropt: PropTypes.array,
+    bazopt: PropTypes.func,
+    fooopt: PropTypes.number,
   }
 
   render() {
@@ -153,9 +156,12 @@ describe('react2angular', () => {
       const reactAngularComponent = react2angular(TestFive)
 
       expect(reactAngularComponent.bindings).toEqual({
-        bar: '<?',
-        baz: '<?',
-        foo: '<?'
+        bar: '<',
+        baz: '<',
+        foo: '<',
+        baropt: '<?',
+        bazopt:'<?',
+        fooopt:'<?'
       })
     })
 
@@ -163,8 +169,19 @@ describe('react2angular', () => {
       const reactAngularComponent = react2angular(TestFive, ['foo'])
 
       expect(reactAngularComponent.bindings).toEqual({
-        foo: '<?'
+        foo: '<'
       })
+    })
+
+    it('should accept optional and required bindings', ()=>{
+      const reactAngularComponent = react2angular(TestFive, [{name: 'foo', optional:true},
+                                                             {name: 'bar', optional:false},
+                                                             'baz'])
+
+      expect(reactAngularComponent.bindings).toEqual({
+        foo: '<'
+      })
+
     })
 
     it('should have empty bindings when parameter is an empty array', () => {
