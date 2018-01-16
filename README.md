@@ -87,7 +87,7 @@ class MyComponent extends Component {
 angular
   .module('myModule', [])
   .constant('FOO', 'FOO!')
-  .component('myComponent', react2angular(MyComponent, [], ['$http', 'FOO'))
+  .component('myComponent', react2angular(MyComponent, [], ['$http', 'FOO', {name:'baz', optional:true}))
 ```
 
 ## Tests
