@@ -2,6 +2,7 @@ import { IAugmentedJQuery, IComponentOptions } from 'angular'
 import fromPairs = require('lodash.frompairs')
 import NgComponent from 'ngcomponent'
 import * as React from 'react'
+import * as PropTypes from 'prop-types'
 import { render, unmountComponentAtNode } from 'react-dom'
 
 /**
@@ -15,13 +16,14 @@ import { render, unmountComponentAtNode } from 'react-dom'
  *   const AngularComponent = react2angular(ReactComponent, ['foo'])
  *   ```
  */
+
 export function react2angular<Props>(
   Class: React.ComponentClass<Props> | React.SFC<Props>,
-  bindingNames: ({name: string, optional:boolean}|string)[] | null = null,
+  bindingNames: ({name: (keyof Props), optional:boolean}|(keyof Props))[] | null = null,
   injectNames: string[] = []
 ): IComponentOptions {
   const names: {name:string, optional:boolean}[] = (bindingNames && (bindingNames as any[]).map(_ => _.name?_:{name:_, optional: false}))
-    || (Class.propTypes && Object.keys(Class.propTypes).map(_ => ({name: _, optional: !(Class.propTypes[_] as any).isRequired})))
+    || (Class.propTypes && Object.keys(Class.propTypes).map((_:keyof Props) => ({name: _, optional: !!((Class.propTypes as React.ValidationMap<Props>)[_] as PropTypes.Requireable<Props>).isRequired})))
     || []
 
   return {
