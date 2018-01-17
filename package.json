@@ -7,7 +7,7 @@
   "typings": "index.d.ts",
   "scripts": {
     "build": "npm run clean && tsc -d -t es2015 && shx mv ./index.js ./index.es2015.js && tsc -t es5",
-    "clean": "shx rm ./*.d.ts && shx rm ./*.map",
+    "clean": "shx rm -f ./*.d.ts && shx rm -f ./*.map",
     "pretest": "npm run build",
     "prepublishOnly": "npm test",
     "test": "karma start --single-run",
