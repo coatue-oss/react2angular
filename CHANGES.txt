@@ -1,0 +1,3 @@
+CHANGES
+
+allow using proptypes to define optionality
