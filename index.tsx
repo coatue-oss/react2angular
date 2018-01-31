@@ -59,7 +59,7 @@ function normalizeBindingNames<Props>(
     return fromPairs(bindingNames.map(_ => [_, '<'])) as AngularBindings<Props>
   }
   if (bindingNames) {
-    return mapValues(bindingNames, (_: {optional: boolean}) => _.optional ? '<?' : '<') as AngularBindings<Props>
+    return mapValues(bindingNames, (_) => _.optional ? '<?' : '<') as AngularBindings<Props>
   }
   if (Class.propTypes) {
     return mapValues(Class.propTypes as {[K in keyof Props]:PropTypes.Requireable<any>}, (_:PropTypes.Requireable<any>) => !_.isRequired ? '<' : '<?') as AngularBindings<Props>
