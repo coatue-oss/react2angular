@@ -5,6 +5,10 @@ import NgComponent from 'ngcomponent'
 import * as React from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 
+interface Requireable<T> extends React.Validator<T>{
+  isRequired: React.Validator<T>
+}
+
 export type BindingNames<Props> = (keyof Props)[]
   | { [K in keyof Props]: { optional: boolean } }
 
@@ -58,10 +62,10 @@ function normalizeBindingNames<Props>(
     return fromPairs(bindingNames.map(_ => [_, '<'])) as AngularBindings<Props>
   }
   if (bindingNames) {
-    return mapValues(bindingNames, _ => _.optional ? '<?' : '<')
+    return mapValues(bindingNames, (_) => _.optional ? '<?' : '<') as AngularBindings<Props>
   }
   if (Class.propTypes) {
-    return mapValues(Class.propTypes, () => '<' as '<')
+    return mapValues(Class.propTypes as {[K in keyof Props]: Requireable<any>}, (_:Requireable<any>) => !_.isRequired ? '<' : '<?') as AngularBindings<Props>
   }
   return {} as any // TODO
 }
