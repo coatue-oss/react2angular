@@ -1,8 +1,20 @@
 import { IAugmentedJQuery, IComponentOptions } from 'angular'
 import fromPairs = require('lodash.frompairs')
+import mapValues = require('lodash.mapvalues')
 import NgComponent from 'ngcomponent'
 import * as React from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
+
+interface Requireable<T> extends React.Validator<T>{
+  isRequired: React.Validator<T>
+}
+
+export type BindingNames<Props> = (keyof Props)[]
+  | { [K in keyof Props]: { optional: boolean } }
+
+type AngularBindings<Props> = {
+  [K in keyof Props]: '<' | '<?'
+}
 
 /**
  * Wraps a React component in Angular. Returns a new Angular component.
@@ -11,23 +23,19 @@ import { render, unmountComponentAtNode } from 'react-dom'
  *
  *   ```ts
  *   type Props = { foo: number }
- *   class ReactComponent extends React.Component<Props, S> {}
- *   const AngularComponent = react2angular(ReactComponent, ['foo'])
+ *   class ReactComponent extends React.Component<Props> {}
+ *   let AngularComponent = react2angular(ReactComponent, ['foo'])
  *   ```
  */
 export function react2angular<Props>(
-  Class: React.ComponentClass<Props> | React.SFC<Props>,
-  bindingNames: (keyof Props)[] | null = null,
+  Class: React.ComponentType<Props>,
+  bindingNames: BindingNames<Props> | null = null,
   injectNames: string[] = []
 ): IComponentOptions {
-  const names = bindingNames
-    || (Class.propTypes && Object.keys(Class.propTypes))
-    || []
-
   return {
-    bindings: fromPairs(names.map(_ => [_, '<'])),
+    bindings: normalizeBindingNames(bindingNames, Class),
     controller: ['$element', ...injectNames, class extends NgComponent<Props> {
-      injectedProps: { [name: string]: any }
+      injectedProps: { [name: string]: any } // TODO
       constructor(private $element: IAugmentedJQuery, ...injectedProps: any[]) {
         super()
         this.injectedProps = {}
@@ -44,4 +52,20 @@ export function react2angular<Props>(
       }
     }]
   }
+}
+
+function normalizeBindingNames<Props>(
+  bindingNames: BindingNames<Props> | null,
+  Class: React.ComponentType<Props>
+): AngularBindings<Props> {
+  if (Array.isArray(bindingNames)) {
+    return fromPairs(bindingNames.map(_ => [_, '<'])) as AngularBindings<Props>
+  }
+  if (bindingNames) {
+    return mapValues(bindingNames, (_) => _.optional ? '<?' : '<') as AngularBindings<Props>
+  }
+  if (Class.propTypes) {
+    return mapValues(Class.propTypes as {[K in keyof Props]: Requireable<any>}, (_:Requireable<any>) => !_.isRequired ? '<' : '<?') as AngularBindings<Props>
+  }
+  return {} as any // TODO
 }

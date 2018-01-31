@@ -39,7 +39,7 @@ class TestFive extends React.Component<Props> {
   static propTypes = {
     bar: PropTypes.array.isRequired,
     baz: PropTypes.func.isRequired,
-    foo: PropTypes.number.isRequired
+    foo: PropTypes.number
   }
 
   render() {
@@ -155,7 +155,7 @@ describe('react2angular', () => {
       expect(reactAngularComponent.bindings).toEqual({
         bar: '<',
         baz: '<',
-        foo: '<'
+        foo: '<?'
       })
     })
 
@@ -164,6 +164,20 @@ describe('react2angular', () => {
 
       expect(reactAngularComponent.bindings).toEqual({
         foo: '<'
+      })
+    })
+
+    it('should support extended notation for bindingNames', () => {
+      const reactAngularComponent = react2angular(TestFive, {
+        bar: { optional: false },
+        baz: { optional: false },
+        foo: { optional: true }
+      })
+
+      expect(reactAngularComponent.bindings).toEqual({
+        bar: '<',
+        baz: '<',
+        foo: '<?'
       })
     })
 

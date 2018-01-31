@@ -90,6 +90,26 @@ angular
   .component('myComponent', react2angular(MyComponent, [], ['$http', 'FOO']))
 ```
 
+## Optional Bindings
+
+By default, all props bindings are required. If some bindings are optional, use the extended syntax:
+
+```ts
+// before
+let AngularComponent = react2angular(MyComponent, [
+  'foo',
+  'bar'
+])
+
+// after
+let AngularComponent = react2angular(MyComponent, {
+  foo: { optional: true },
+  bar: { optional: false }
+})
+```
+
+Note that you must pass either an array of strings describing your bindings, or a single object. You can't, for example, pass an array of objects.
+
 ## Tests
 
 ```sh
