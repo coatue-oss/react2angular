@@ -2,9 +2,12 @@ import { IAugmentedJQuery, IComponentOptions } from 'angular'
 import fromPairs = require('lodash.frompairs')
 import mapValues = require('lodash.mapvalues')
 import NgComponent from 'ngcomponent'
-import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
+
+interface Requireable<T> extends React.Validator<T>{
+  isRequired: React.Validator<T>
+}
 
 export type BindingNames<Props> = (keyof Props)[]
   | { [K in keyof Props]: { optional: boolean } }
@@ -62,7 +65,7 @@ function normalizeBindingNames<Props>(
     return mapValues(bindingNames, (_) => _.optional ? '<?' : '<') as AngularBindings<Props>
   }
   if (Class.propTypes) {
-    return mapValues(Class.propTypes as {[K in keyof Props]:PropTypes.Requireable<any>}, (_:PropTypes.Requireable<any>) => !_.isRequired ? '<' : '<?') as AngularBindings<Props>
+    return mapValues(Class.propTypes as {[K in keyof Props]: Requireable<any>}, (_:Requireable<any>) => !_.isRequired ? '<' : '<?') as AngularBindings<Props>
   }
   return {} as any // TODO
 }
