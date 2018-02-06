@@ -52,7 +52,7 @@
     "angular-mocks": "^1.6.6",
     "angular-resource": "^1.6.6",
     "browserify": "^15.1.0",
-    "jasmine": "^2.8.0",
+    "jasmine": "^3.0.0",
     "jasmine-core": "^2.8.0",
     "karma": "^2.0.0",
     "karma-browserify": "^5.1.2",
