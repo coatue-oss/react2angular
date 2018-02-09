@@ -36,8 +36,7 @@ export function react2angular<Props>(
         })
       }
       render() {
-        // TODO: rm any when https://github.com/Microsoft/TypeScript/pull/13288 is merged
-        render(<Class {...this.injectedProps} {...(this.props as any)} />, this.$element[0])
+        render(<Class {...this.injectedProps} {...this.props} />, this.$element[0])
       }
       componentWillUnmount() {
         unmountComponentAtNode(this.$element[0])
