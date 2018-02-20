@@ -90,6 +90,8 @@ angular
   .component('myComponent', react2angular(MyComponent, [], ['$http', 'FOO']))
 ```
 
+Note: If you have an injection that matches the name of a prop, then the value will be resolved with the injection, not the prop.
+
 ## Tests
 
 ```sh

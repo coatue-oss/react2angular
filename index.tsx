@@ -36,7 +36,7 @@ export function react2angular<Props>(
         })
       }
       render() {
-        render(<Class {...this.injectedProps} {...this.props} />, this.$element[0])
+        render(<Class {...this.props} {...this.injectedProps} />, this.$element[0])
       }
       componentWillUnmount() {
         unmountComponentAtNode(this.$element[0])

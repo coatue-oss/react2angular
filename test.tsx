@@ -268,7 +268,7 @@ describe('react2angular', () => {
       expect(element.find('span').length).toBe(0)
     })
 
-    it('should take injected props', () => {
+    it('should take injections, which override props', () => {
       spyOn($http, 'get').and.returnValue($q.resolve({ data: '$http response' }))
       const scope = Object.assign($rootScope.$new(true), {
         foo: 'FOO'
@@ -286,8 +286,8 @@ describe('react2angular', () => {
       expect(element1.find('p').eq(0).text()).toBe('$http response', '$http is injected')
       expect(element1.find('p').eq(1).text()).toBe('$element result', '$element is injected')
       expect(element1.find('p').eq(2).text()).toBe('testSixService result', 'testSixService is injected')
-      expect(element1.find('p').eq(3).text()).toBe('FOO', 'bindingNames overrides injectedProps')
-      expect(element2.find('p').text()).toBe('FOO', 'propTypes overrides injectedProps')
+      expect(element1.find('p').eq(3).text()).toBe('CONSTANT FOO', 'injections should override props')
+      expect(element2.find('p').text()).toBe('CONSTANT FOO', 'injections should override props')
     })
 
   })
