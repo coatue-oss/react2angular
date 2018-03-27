@@ -22,6 +22,7 @@
   },
   "files": [
     "index.tsx",
-    "test.tsx"
+    "test.tsx",
+    "html-react-parser.d.ts"
   ]
 }

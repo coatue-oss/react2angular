@@ -255,17 +255,48 @@ describe('react2angular', () => {
       expect(baz).toHaveBeenCalledWith(42)
     })
 
-    // TODO: support children
-    it('should not support children', () => {
+    it('should support multiple children', () => {
       const scope = Object.assign($rootScope.$new(true), {
         bar: [true, false],
         baz: (value: number) => value + 1,
         foo: 1
       })
-      const element = $(`<test-angular-one foo="foo" bar="bar" baz="baz"><span>Transcluded</span></test-angular-one>`)
+      const element = $(`<test-angular-one foo="foo" bar="bar" baz="baz"><h1>transcluded</h1><h2>transcluded</h2></test-angular-one>`)
       $compile(element)(scope)
       $rootScope.$apply()
-      expect(element.find('span').length).toBe(0)
+      expect(element.find('h1').length).toBe(1)
+      expect(element.find('h1').text()).toBe('transcluded')
+      expect(element.find('h2').length).toBe(1)
+      expect(element.find('h2').text()).toBe('transcluded')
+    })
+
+    it('should support transclusion of other components', () => {
+      const scope = Object.assign($rootScope.$new(true), {
+        bar: [true, false],
+        baz: (value: number) => value + 1,
+        foo: 1
+      })
+      const element = $(`<test-angular-one foo="foo" bar="bar"><test-angular-two foo="foo" bar="bar"></test-angular-two></test-angular-one>`)
+      $compile(element)(scope)
+      $rootScope.$apply()
+      expect(element.find('div').length).toBe(2)
+      expect(element.find('p').length).toBe(6)
+    })
+
+    it('should update with children', () => {
+      const scope = Object.assign($rootScope.$new(true), {
+        bar: [true, false],
+        foo: 1
+      })
+      const element = $(`<test-angular-one foo="foo" bar="bar"><span>{{foo}}</span></test-angular-one>`)
+      $compile(element)(scope)
+      $rootScope.$apply()
+      expect(element.find('span').text()).toBe('1')
+      
+      scope.$apply(() =>
+        scope.foo = 2
+      )
+      expect(element.find('span').text()).toBe('2')
     })
 
     it('should take injected props', () => {

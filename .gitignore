@@ -4,3 +4,4 @@ node_modules
 *.js
 *.map
 !karma.conf.js
+!html-react-parser.d.ts

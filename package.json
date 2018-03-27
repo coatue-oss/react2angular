@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@types/angular-mocks": "^1.5.11",
+    "@types/htmltojsx": "0.0.29",
     "@types/jasmine": "^2.8.6",
     "@types/jquery": "^3.3.0",
     "@types/prop-types": "^15.5.2",
@@ -74,6 +75,8 @@
     "@types/angular": ">=1.5",
     "@types/lodash.frompairs": "^4.0.3",
     "angular": ">=1.5",
+    "html-react-parser": "^0.4.3",
+    "htmltojsx": "^0.3.0",
     "lodash.frompairs": "^4.0.1",
     "ngcomponent": "^4.1.0"
   }
