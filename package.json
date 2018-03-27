@@ -7,7 +7,7 @@
   "typings": "index.d.ts",
   "scripts": {
     "build": "npm run clean; tsc -d -t es2015 && mv ./index.js ./index.es2015.js && tsc -t es5",
-    "clean": "rm ./*.d.ts; rm ./*.map; exit 0",
+    "clean": "rm ./index.d.ts ./test.d.ts; rm ./*.map; exit 0",
     "pretest": "npm run build",
     "prepublishOnly": "npm test",
     "test": "karma start --single-run",
@@ -77,6 +77,7 @@
     "angular": ">=1.5",
     "html-react-parser": "^0.4.3",
     "htmltojsx": "^0.3.0",
+    "install-peers": "^1.0.2",
     "lodash.frompairs": "^4.0.1",
     "ngcomponent": "^4.1.0"
   }
