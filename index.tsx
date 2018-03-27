@@ -53,12 +53,14 @@ export function react2angular<Props>(
       render() {
         let children;
         this.$transclude((clone: JQuery, scope: IScope) => {
-          children = Array.prototype.slice.call(clone).map((element: HTMLElement) => {
-            this.$compile(element)(scope)
-            const phase = scope.$root.$$phase
-            if (phase !== '$apply' && phase !== '$digest') {
+          const isDigestCycle = scope.$$phase || scope.$root.$$phase;
+
+          children = Array.prototype.slice.call(this.transcludedContent || clone).map((element: HTMLElement) => {
+            if (!isDigestCycle) {
+              this.$compile(element)(scope)
               scope.$apply()
             }
+
             return converter.convert(element.outerHTML)
           })
           this.transcludedContent = clone
