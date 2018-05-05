@@ -27,6 +27,9 @@ export function react2angular<Props>(
   return {
     bindings: fromPairs(names.map(_ => [_, '<'])),
     controller: ['$element', ...injectNames, class extends NgComponent<Props> {
+      static get $$ngIsClass() {
+        return true;
+      }
       injectedProps: { [name: string]: any }
       constructor(private $element: IAugmentedJQuery, ...injectedProps: any[]) {
         super()
