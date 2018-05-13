@@ -1,6 +1,6 @@
 {
   "name": "react2angular",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "The easiest way to embed React components in Angular 1 apps!",
   "main": "index.js",
   "main:esnext": "index.es2015.js",
@@ -35,15 +35,16 @@
   },
   "homepage": "https://github.com/coatue-oss/react2angular#readme",
   "peerDependencies": {
+    "@types/angular": ">=1.5",
     "@types/prop-types": ">=15",
     "@types/react": ">=16",
     "@types/react-dom": ">=16",
     "prop-types": ">=15",
     "react": ">=15",
-    "react-dom": ">=15",
-    "@types/angular": ">=1.5"
+    "react-dom": ">=15"
   },
   "devDependencies": {
+    "@types/angular": ">=1.5",
     "@types/angular-mocks": "^1.5.11",
     "@types/jasmine": "^2.8.6",
     "@types/jquery": "^3.3.0",
@@ -69,8 +70,7 @@
     "rollupify": "^0.4.0",
     "tslint": "^5.9.1",
     "typescript": "^2.7.1",
-    "watchify": "^3.10.0",
-    "@types/angular": ">=1.5"
+    "watchify": "^3.10.0"
   },
   "dependencies": {
     "@types/lodash.frompairs": "^4.0.3",
