@@ -11,13 +11,12 @@
     ],
     "module": "commonjs",
     "moduleResolution": "node",
-    "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "preserveConstEnums": true,
     "pretty": true,
     "sourceMap": true,
-    "strictNullChecks": true,
+    "strict": true,
     "target": "es2015"
   },
   "files": [
