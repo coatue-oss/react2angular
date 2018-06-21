@@ -21,7 +21,7 @@ export function react2angular<Props>(
   injectNames: string[] = []
 ): IComponentOptions {
   const names = bindingNames
-    || (Class.propTypes && Object.keys(Class.propTypes))
+    || (Class.propTypes && Object.keys(Class.propTypes) as (keyof Props)[])
     || []
 
   return {
