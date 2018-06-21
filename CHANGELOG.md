@@ -1,5 +1,9 @@
 # Changelog
 
+### 4.0.3
+
+- [patch] Add changelog
+
 ### 4.0.2
 
 - [patch] Move *@types/angular* from `dependencies` to `devDependencies` fc6fe7c4e64cc0fc654082f74ee21c27cc5d43ff
