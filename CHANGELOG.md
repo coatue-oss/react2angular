@@ -1,5 +1,11 @@
 # Changelog
 
+### 4.0.4
+
+- [patch] Use TypeScript Strict mode 4447c1967a77ffba8d3d6a6c419a5a8b47844d17
+- [patch] Run lint as part of build aa055943951019330040bada87fd16b4d3e86ca4
+- [patch] Upgrade `devDependencies` aee4487ea896ee5d92bbd60df14efea3345e2bbb
+
 ### 4.0.3
 
 - [patch] Add changelog
