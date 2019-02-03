@@ -107,12 +107,30 @@ class TestSeven extends React.Component<Props> {
   }
 }
 
+interface TestEightProps {
+  onComponentWillUnmount: any,
+  onRender: any,
+  values: string[],
+}
+
+class TestEight extends React.Component<TestEightProps> {
+  render() {
+    this.props.onRender()
+    return this.props.values.map((value, index) => <div key={index}>{value}</div>)
+  }
+
+  componentWillUnmount() {
+    this.props.onComponentWillUnmount()
+  }
+}
+
 const TestAngularOne = react2angular(TestOne, ['foo', 'bar', 'baz'])
 const TestAngularTwo = react2angular(TestTwo, ['foo', 'bar', 'baz'])
 const TestAngularThree = react2angular(TestThree)
 const TestAngularFour = react2angular(TestFour)
 const TestAngularSix = react2angular(TestSix, ['foo'], ['$http', '$element', 'testSixService', 'foo'])
 const TestAngularSeven = react2angular(TestSeven, null, ['foo'])
+const TestAngularEight = react2angular(TestEight, ['values', 'onComponentWillUnmount', 'onRender'])
 
 module('test', ['bcherny/ngimport'])
   .component('testAngularOne', TestAngularOne)
@@ -123,6 +141,7 @@ module('test', ['bcherny/ngimport'])
   .constant('foo', 'CONSTANT FOO')
   .component('testAngularSix', TestAngularSix)
   .component('testAngularSeven', TestAngularSeven)
+  .component('testAngularEight', TestAngularEight)
 
 bootstrap($(), ['test'], { strictDi: true })
 
@@ -359,6 +378,25 @@ describe('react2angular', () => {
       $rootScope.$apply()
       expect(element.find('span').length).toBe(0)
     })
+
+    // it('should not call render after component unmount', () => {
+    //   const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount')
+    //   const renderSpy = jasmine.createSpy('render')
+
+    //   const scope = Object.assign($rootScope.$new(true), {
+    //     onComponentWillUnmount: componentWillUnmountSpy,
+    //     onRender: renderSpy,
+    //     values: ['val1']
+    //   })
+    //   const element = $(`<test-angular-eight values="values"></test-angular-eight>`)
+
+    //   $compile(element)(scope)
+    //   $rootScope.$apply()
+    //   scope.values = ['newVal1']
+    //   scope.$destroy()
+
+    //   expect(componentWillUnmountSpy).not.toHaveBeenCalledBefore(renderSpy)
+    // })
 
   })
 
