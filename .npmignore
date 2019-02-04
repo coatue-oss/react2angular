@@ -1,5 +1,5 @@
 .DS_Store
-circle.yml
+.circleci
 node_modules
 test.js
 test.d.ts
