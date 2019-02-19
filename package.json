@@ -6,8 +6,8 @@
   "main:esnext": "index.es2015.js",
   "typings": "index.d.ts",
   "scripts": {
-    "build": "npm run clean && npm run lint && tsc -d -t es2015 && mv ./index.js ./index.es2015.js && tsc -t es5",
-    "clean": "rm -f ./*.d.ts && rm -f ./*.map",
+    "build": "npm run clean && tsc -d -t es2015 && mv ./index.js ./index.es2015.js && tsc -t es5",
+    "clean": "rimraf ./*.d.ts && rimraf ./*.map",
     "lint": "tslint -p ./tsconfig.json index.tsx test.tsx",
     "pretest": "npm run build",
     "prepublishOnly": "npm test",
@@ -68,6 +68,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "rimraf": "^2.6.3",
     "rollupify": "^0.5.0",
     "tslint": "^5.10.0",
     "typescript": "^2.9.2",
