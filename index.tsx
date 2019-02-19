@@ -16,7 +16,7 @@ import { render, unmountComponentAtNode } from 'react-dom'
  *   ```
  */
 export function react2angular<Props>(
-  Class: React.ComponentClass<Props> | React.SFC<Props>,
+  Class: React.ComponentType<Props>,
   bindingNames: (keyof Props)[] | null = null,
   injectNames: string[] = []
 ): IComponentOptions {
@@ -41,7 +41,10 @@ export function react2angular<Props>(
       }
       render() {
         if (!this.isDestroyed) {
-          render(<Class {...this.props} {...this.injectedProps} />, this.$element[0])
+          render(
+          <Class {...this.props} {...this.injectedProps as any} />,
+          this.$element[0]
+        )
         }
       }
       componentWillUnmount() {

@@ -1,4 +1,5 @@
-import { bootstrap, element as $, IAugmentedJQuery, ICompileService, IHttpService, IQService, mock, module } from 'angular'
+import { bootstrap, element as $, IAugmentedJQuery, ICompileService, IHttpService, IQService, module } from 'angular'
+import * as angular from 'angular'
 import 'angular-mocks'
 import { $http, $q, $rootScope } from 'ngimport'
 import * as PropTypes from 'prop-types'
@@ -97,14 +98,8 @@ class TestSix extends React.Component<Props & DIProps> {
   }
 }
 
-class TestSeven extends React.Component<Props> {
-  static propTypes = {
-    foo: PropTypes.string.isRequired
-  }
-
-  render() {
-    return <p>{this.props.foo}</p>
-  }
+function TestSeven(props: Props) {
+  return <p>{props.foo}</p>
 }
 
 interface TestEightProps {
@@ -156,8 +151,8 @@ describe('react2angular', () => {
   let $compile: any
 
   beforeEach(() => {
-    mock.module('test')
-    mock.inject(function(_$compile_: ICompileService) {
+    angular.mock.module('test')
+    angular.mock.inject(function(_$compile_: ICompileService) {
       $compile = _$compile_
     })
   })
