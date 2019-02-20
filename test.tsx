@@ -423,20 +423,30 @@ describe('react2angular', () => {
         onRender: renderSpy,
         values: ['val1']
       })
-      const element = $(`<test-angular-eight-wrapper
-                                    on-render="onRender"
-                                    on-component-will-unmount="onComponentWillUnmount"
-                                    values="values">
-                                </test-angular-eight-wrapper>`)
+      const element = $(`
+        <test-angular-eight-wrapper
+          on-render="onRender"
+          on-component-will-unmount="onComponentWillUnmount"
+          values="values">
+        </test-angular-eight-wrapper>
+      `)
 
       $compile(element)(scope)
-      const innerScope = angular
+
+      const childScope = angular
           .element(element.find('test-angular-eight'))
           .scope()
       $rootScope.$apply()
-      renderSpy.calls.reset()
-      innerScope.$destroy()
 
+      // Erase first render caused on apply
+      renderSpy.calls.reset()
+
+      // Destroy child component to cause unmount
+      childScope.$destroy()
+
+      // Make sure render on child was not called after unmount
+      expect(componentWillUnmountSpy.calls.count()).toEqual(1)
+      expect(renderSpy.calls.count()).toEqual(0)
       expect(componentWillUnmountSpy).not.toHaveBeenCalledBefore(renderSpy)
     })
   })
