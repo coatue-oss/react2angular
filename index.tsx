@@ -42,9 +42,9 @@ export function react2angular<Props>(
       render() {
         if (!this.isDestroyed) {
           render(
-          <Class {...this.props} {...this.injectedProps as any} />,
-          this.$element[0]
-        )
+            <Class {...this.props} {...this.injectedProps as any} />,
+            this.$element[0]
+          )
         }
       }
       componentWillUnmount() {
