@@ -30,6 +30,7 @@ export function react2angular<Props>(
       static get $$ngIsClass() {
         return true
       }
+      isDestroyed = false
       injectedProps: { [name: string]: any }
       constructor(private $element: IAugmentedJQuery, ...injectedProps: any[]) {
         super()
@@ -39,12 +40,15 @@ export function react2angular<Props>(
         })
       }
       render() {
-        render(
-          <Class {...this.props} {...this.injectedProps as any} />,
-          this.$element[0]
-        )
+        if (!this.isDestroyed) {
+          render(
+            <Class {...this.props} {...this.injectedProps as any} />,
+            this.$element[0]
+          )
+        }
       }
       componentWillUnmount() {
+        this.isDestroyed = true
         unmountComponentAtNode(this.$element[0])
       }
     }]

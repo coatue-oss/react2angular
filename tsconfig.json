@@ -4,6 +4,7 @@
     "declaration": false,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
+    "skipLibCheck": true,
     "lib": [
       "dom",
       "es2015",
@@ -22,5 +23,8 @@
   "files": [
     "index.tsx",
     "test.tsx"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }
