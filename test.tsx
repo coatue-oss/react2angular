@@ -191,8 +191,8 @@ describe('react2angular', () => {
   let $compile: any
 
   beforeEach(() => {
-    angular.mock.module('test')
-    angular.mock.inject(function(_$compile_: ICompileService) {
+    (angular as any).mock.module('test');
+    (angular as any).mock.inject(function(_$compile_: ICompileService) {
       $compile = _$compile_
     })
   })
