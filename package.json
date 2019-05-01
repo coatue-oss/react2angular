@@ -36,11 +36,6 @@
   },
   "homepage": "https://github.com/coatue-oss/react2angular#readme",
   "peerDependencies": {
-    "@types/angular": ">=1.5",
-    "@types/prop-types": ">=15",
-    "@types/react": ">=16",
-    "@types/react-dom": ">=16",
-    "prop-types": ">=15",
     "react": ">=15",
     "react-dom": ">=15"
   },
