@@ -32,7 +32,7 @@ export function react2angular<Props>(
     || (Class.propTypes && Object.keys(Class.propTypes) as (keyof Props)[])
     || {}
 
-  // Cast array to bindings object 
+  // Cast array to bindings object
   if (Array.isArray(bindings)) {
     bindings = fromPairs(bindings.map(_ => [_, '<']))
   }
