@@ -4,7 +4,7 @@ import NgComponent from 'ngcomponent'
 import * as React from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 
-export type BindingNames = null | string[] | {
+export type Bindings = null | string[] | {
   [key: string]: any
 }
 
@@ -25,14 +25,19 @@ type GenericObject = {
  */
 export function react2angular<Props>(
   Class: React.ComponentType<Props>,
-  bindingNames: BindingNames = null,
+  bindings: Bindings = {},
   injectNames: string[] = []
 ): IComponentOptions {
-  const bindingsList = bindingNames
+  bindings = bindings
     || (Class.propTypes && Object.keys(Class.propTypes) as (keyof Props)[])
-    || []
+    || {}
 
-  const bindings = Array.isArray(bindingsList) ? fromPairs(bindingsList.map(_ => [_, '<'])) : bindingsList
+  // Cast array to bindings object 
+  if (Array.isArray(bindings)) {
+    bindings = fromPairs(bindings.map(_ => [_, '<']))
+  }
+
+  const bindingNames = Object.keys(bindings)
 
   return {
     bindings,
@@ -52,7 +57,8 @@ export function react2angular<Props>(
       render() {
         if (!this.isDestroyed) {
           const controller: GenericObject = this
-          const props: { [key: string]: any } = Object.keys(bindings).reduce((
+
+          const props: { [key: string]: any } = bindingNames.reduce((
             props: GenericObject,
             key: string
           ) => {
