@@ -4,6 +4,14 @@ import NgComponent from 'ngcomponent'
 import * as React from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 
+export type BindingNames = null | string[] | {
+  [key: string]: any
+}
+
+type GenericObject = {
+  [key: string]: any
+}
+
 /**
  * Wraps a React component in Angular. Returns a new Angular component.
  *
@@ -17,21 +25,23 @@ import { render, unmountComponentAtNode } from 'react-dom'
  */
 export function react2angular<Props>(
   Class: React.ComponentType<Props>,
-  bindingNames: (keyof Props)[] | null = null,
+  bindingNames: BindingNames = null,
   injectNames: string[] = []
 ): IComponentOptions {
-  const names = bindingNames
+  const bindingsList = bindingNames
     || (Class.propTypes && Object.keys(Class.propTypes) as (keyof Props)[])
     || []
 
+  const bindings = Array.isArray(bindingsList) ? fromPairs(bindingsList.map(_ => [_, '<'])) : bindingsList
+
   return {
-    bindings: fromPairs(names.map(_ => [_, '<'])),
+    bindings,
     controller: ['$element', ...injectNames, class extends NgComponent<Props> {
       static get $$ngIsClass() {
         return true
       }
       isDestroyed = false
-      injectedProps: { [name: string]: any }
+      injectedProps: GenericObject
       constructor(private $element: IAugmentedJQuery, ...injectedProps: any[]) {
         super()
         this.injectedProps = {}
@@ -41,8 +51,17 @@ export function react2angular<Props>(
       }
       render() {
         if (!this.isDestroyed) {
+          const controller: GenericObject = this
+          const props: { [key: string]: any } = Object.keys(bindings).reduce((
+            props: GenericObject,
+            key: string
+          ) => {
+            props[key] = controller[key]
+            return props
+          }, this.props)
+
           render(
-            <Class {...this.props} {...this.injectedProps as any} />,
+            <Class {...props} {...this.injectedProps as any} />,
             this.$element[0]
           )
         }
