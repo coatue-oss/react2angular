@@ -59,6 +59,8 @@ If `propTypes` are defined and you passed in a 2nd argument, the argument will o
 ></my-component>
 ```
 
+Note: All React props are converted to AngularJS one-way bindings. If you are passing functions into your React component, they need to be passed as a function ref, rather than as an invokable expression. Keeping an existing AngularJS-style expression will result in infinite loops as the function re-evaluates on each digest loop.
+
 ## Dependency Injection
 
 It's easy to pass services/constants/etc. to your React component: just pass them in as the 3rd argument, and they will be available in your component's Props. For example:
