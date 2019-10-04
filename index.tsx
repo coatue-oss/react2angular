@@ -2,7 +2,7 @@ import { IAugmentedJQuery, IComponentOptions } from 'angular'
 import fromPairs = require('lodash.frompairs')
 import NgComponent from 'ngcomponent'
 import * as React from 'react'
-import { render, unmountComponentAtNode } from 'react-dom'
+import { render,createPortal, unmountComponentAtNode } from 'react-dom'
 
 /**
  * Wraps a React component in Angular. Returns a new Angular component.
@@ -18,7 +18,8 @@ import { render, unmountComponentAtNode } from 'react-dom'
 export function react2angular<Props>(
   Class: React.ComponentType<Props>,
   bindingNames: (keyof Props)[] | null = null,
-  injectNames: string[] = []
+  injectNames: string[] = [],
+  usePortal: boolean = false
 ): IComponentOptions {
   const names = bindingNames
     || (Class.propTypes && Object.keys(Class.propTypes) as (keyof Props)[])
@@ -41,7 +42,8 @@ export function react2angular<Props>(
       }
       render() {
         if (!this.isDestroyed) {
-          render(
+          usePortal ? createPortal(<Class {...this.props} {...this.injectedProps as any} />,
+            this.$element[0]) : render(
             <Class {...this.props} {...this.injectedProps as any} />,
             this.$element[0]
           )
