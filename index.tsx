@@ -1,6 +1,7 @@
 import { IAugmentedJQuery, IComponentOptions } from 'angular'
 import fromPairs = require('lodash.frompairs')
 import NgComponent from 'ngcomponent'
+import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 
@@ -24,8 +25,10 @@ export function react2angular<Props>(
     || (Class.propTypes && Object.keys(Class.propTypes) as (keyof Props)[])
     || []
 
+
   return {
-    bindings: fromPairs(names.map(_ => [_, '<'])),
+  // @ts-ignore
+    bindings: fromPairs(names.map(_ => [_, Class.propTypes[_] == PropTypes.string ? '@' : '<'])),
     controller: ['$element', ...injectNames, class extends NgComponent<Props> {
       static get $$ngIsClass() {
         return true
