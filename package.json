@@ -78,6 +78,6 @@
     "@types/lodash.frompairs": "^4.0.5",
     "angular": ">=1.5",
     "lodash.frompairs": "^4.0.1",
-    "ngcomponent": "^4.1.0"
+    "ngcomponent": "^5.1.0"
   }
 }
