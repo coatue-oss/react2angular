@@ -1,6 +1,6 @@
 {
   "name": "react2angular",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "The easiest way to embed React components in Angular 1 apps!",
   "main": "index.js",
   "main:esnext": "index.es2015.js",
@@ -78,6 +78,6 @@
     "@types/lodash.frompairs": "^4.0.5",
     "angular": ">=1.5",
     "lodash.frompairs": "^4.0.1",
-    "ngcomponent": "^5.1.0"
+    "ngcomponent": "^5.2.0"
   }
 }
