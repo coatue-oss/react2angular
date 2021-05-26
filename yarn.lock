@@ -1229,7 +1229,7 @@ extend-shallow@^2.0.1:
   dependencies:
     is-extendable "^0.1.0"
 
-extend-shallow@^3.0.0, extend-shallow@^3.0.2:
+extend-shallow@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/extend-shallow/-/extend-shallow-3.0.2.tgz#26a71aaf073b39fb2127172746131c2704028db8"
   integrity sha1-Jqcarwc7OfshJxcnRhMcJwQCjbg=
@@ -1942,7 +1942,7 @@ karma@^4.0.1:
     tmp "0.0.33"
     useragent "2.3.0"
 
-kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
+kind-of@^3.0.2, kind-of@^3.0.3:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"
   integrity sha1-MeohpzS6ubuw8yRm2JOupR5KPGQ=
@@ -2247,10 +2247,10 @@ negotiator@0.6.1:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
   integrity sha1-KzJxhOiZIQEXeyhWP7XnECrNDKk=
 
-ngcomponent@^5.1.0:
-  version "5.1.0"
-  resolved "http://npm.domotz.com:4873/ngcomponent/-/ngcomponent-5.1.0.tgz#cacfbca56ea20170b55ae13c7ba15fffba6c808b"
-  integrity sha512-AQrXbWo/jjP/GC+saIac2YmFP51BNOVTJEKEmxkGb8o5ahTjo8BwFTUdxWVD9Hkkhqq2gG5MF22igzQbQNhu1Q==
+ngcomponent@^5.2.0:
+  version "5.2.0"
+  resolved "http://npm.domotz.com:4873/ngcomponent/-/ngcomponent-5.2.0.tgz#14fff26ec046d633e4c2e670043d60f2e9a21dda"
+  integrity sha512-yUEesw5M+H1lqrJaL1VDLNvKkPIfZhE37qlxMw/gnWSrxDwNOsfWW7ONhzBK77bX+OhT1hIAxX0XLWXJmxVGJA==
   dependencies:
     "@types/angular" "^1.6.42"
     "@types/lodash" "^4.14.102"
