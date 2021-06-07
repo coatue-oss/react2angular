@@ -53,7 +53,9 @@ export function react2angular<Props>(
       }
       componentWillUnmount() {
         this.isDestroyed = true
-        unmountComponentAtNode(this.$element[0])
+        if(this.$element[0]){
+          unmountComponentAtNode(this.$element[0])
+        }
       }
     }]
   }
