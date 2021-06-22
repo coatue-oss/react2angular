@@ -4,7 +4,7 @@
   "description": "The easiest way to embed React components in Angular 1 apps!",
   "main": "index.js",
   "main:esnext": "index.es2015.js",
-  "typings": "index.d.ts",
+  "types": "index.d.ts",
   "scripts": {
     "build": "npm run clean && npm run lint && tsc -d -t es2015 && mv ./index.js ./index.es2015.js && tsc -t es5",
     "clean": "rimraf ./*.d.ts && rimraf ./*.map",
