@@ -1,83 +1,49 @@
 {
-  "name": "react2angular",
-  "version": "4.0.6",
-  "description": "The easiest way to embed React components in Angular 1 apps!",
-  "main": "index.js",
-  "main:esnext": "index.es2015.js",
-  "typings": "index.d.ts",
+  "name": "react-to-angularjs",
+  "version": "1.0.0",
+  "description": "The easiest way to embed React 18 components in AngularJS 1 apps!",
+  "main": "./build/index.js",
+  "typings": "./build/index.d.ts",
   "scripts": {
-    "build": "npm run clean && npm run lint && tsc -d -t es2015 && mv ./index.js ./index.es2015.js && tsc -t es5",
-    "clean": "rimraf ./*.d.ts && rimraf ./*.map",
-    "lint": "tslint --fix -p ./tsconfig.json index.tsx test.tsx",
-    "pretest": "npm run build",
-    "prepublishOnly": "npm test",
-    "test": "karma start --single-run",
-    "tdd": "npm-run-all -pr watch:*",
-    "watch:ts": "tsc -w",
-    "watch:test": "karma start"
+    "build": "swc index.tsx -o ./build/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/coatue-oss/react2angular.git"
+    "url": "git+ssh://git@github.com:karesztrk/react-to-angularjs.git"
   },
   "keywords": [
     "react",
+    "react18",
     "angular",
+    "angularjs",
     "interop",
     "ngreact",
     "combine",
     "together",
     "embed"
   ],
-  "author": "Boris Cherny <boris@performancejs.com>",
+  "author": "Karoly Torok <torok.karoly.krisztian@gmail.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/coatue-oss/react2angular/issues"
+    "url": "https://github.com/karesztrk/react-to-angularjs/issues"
   },
-  "homepage": "https://github.com/coatue-oss/react2angular#readme",
+  "homepage": "https://github.com/karesztrk/react-to-angularjs#readme",
   "peerDependencies": {
     "@types/angular": ">=1.5",
-    "@types/prop-types": ">=15",
-    "@types/react": ">=16",
-    "@types/react-dom": ">=16",
-    "prop-types": ">=15",
-    "react": ">=15",
-    "react-dom": ">=15"
+    "@types/react": ">=18",
+    "@types/react-dom": ">=18",
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
-    "@types/angular": "^1.6.54",
-    "@types/angular-mocks": "^1.7.0",
-    "@types/jasmine": "^3.3.9",
-    "@types/jquery": "^3.3.29",
-    "@types/prop-types": "^15.7.0",
-    "@types/react": "^16.8.6",
-    "@types/react-dom": "^16.8.2",
-    "angular-mocks": "1.6.9",
-    "angular-resource": "^1.7.7",
-    "browserify": "^16.2.3",
-    "jasmine": "^3.3.1",
-    "jasmine-core": "^3.3.0",
-    "karma": "^4.0.1",
-    "karma-browserify": "^6.0.0",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-jasmine": "^2.0.1",
-    "karma-mocha-reporter": "^2.2.5",
-    "karma-source-map-support": "^1.4.0",
-    "ngimport": "^1.0.0",
-    "npm-run-all": "^4.1.5",
-    "prop-types": "^15.7.2",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
-    "rimraf": "^2.6.3",
-    "rollupify": "^0.5.1",
-    "tslint": "^5.13.1",
-    "typescript": "^3.3.3333",
-    "watchify": "^3.11.1"
-  },
-  "dependencies": {
-    "@types/lodash.frompairs": "^4.0.5",
-    "angular": ">=1.5",
-    "lodash.frompairs": "^4.0.1",
-    "ngcomponent": "^4.1.0"
+    "@swc/cli": "^0.1.57",
+    "@swc/core": "^1.2.198",
+    "@types/angular": "^1.8.4",
+    "@types/react": "^18.0.12",
+    "@types/react-dom": "^18.0.5",
+    "angular": "^1.8.3",
+    "ngcomponent": "^4.1.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
   }
 }

@@ -1,8 +1,13 @@
 import { IAugmentedJQuery, IComponentOptions } from 'angular'
-import fromPairs = require('lodash.frompairs')
 import NgComponent from 'ngcomponent'
 import * as React from 'react'
-import { render, unmountComponentAtNode } from 'react-dom'
+import { createRoot, Root } from 'react-dom/client'
+
+const defaultBinding = '>'
+
+const selector = '$element'
+
+type Bindings<K> = Record<keyof K, '>'>
 
 /**
  * Wraps a React component in Angular. Returns a new Angular component.
@@ -16,41 +21,53 @@ import { render, unmountComponentAtNode } from 'react-dom'
  *   ```
  */
 export function react2angular<Props>(
-  Class: React.ComponentType<Props>,
-  bindingNames: (keyof Props)[] | null = null,
-  injectNames: string[] = []
+    Class: React.ComponentType<Props>,
+    bindingNames: (keyof Props)[] | null = null,
+    injectNames: string[] = []
 ): IComponentOptions {
-  const names = bindingNames
-    || (Class.propTypes && Object.keys(Class.propTypes) as (keyof Props)[])
-    || []
+    const names = bindingNames || (Class.propTypes && (Object.keys(Class.propTypes) as (keyof Props)[])) || []
 
-  return {
-    bindings: fromPairs(names.map(_ => [_, '<'])),
-    controller: ['$element', ...injectNames, class extends NgComponent<Props> {
-      static get $$ngIsClass() {
-        return true
-      }
-      isDestroyed = false
-      injectedProps: { [name: string]: any }
-      constructor(private $element: IAugmentedJQuery, ...injectedProps: any[]) {
-        super()
-        this.injectedProps = {}
-        injectNames.forEach((name, i) => {
-          this.injectedProps[name] = injectedProps[i]
-        })
-      }
-      render() {
-        if (!this.isDestroyed) {
-          render(
-            <Class {...this.props} {...this.injectedProps as any} />,
-            this.$element[0]
-          )
-        }
-      }
-      componentWillUnmount() {
-        this.isDestroyed = true
-        unmountComponentAtNode(this.$element[0])
-      }
-    }]
-  }
+    const bindings = names.reduce<Bindings<Props>>((acc, curr) => {
+        acc[curr] = defaultBinding
+        return acc
+    }, {} as Bindings<Props>)
+
+    return {
+        bindings,
+        controller: [
+            selector,
+            ...injectNames,
+            class extends NgComponent<Props> {
+                static get $$ngIsClass() {
+                    return true
+                }
+                isDestroyed = false
+                injectedProps: { [name: string]: unknown }
+                root?: Root
+                constructor(private $element: IAugmentedJQuery, ...injectedProps: unknown[]) {
+                    super()
+                    this.injectedProps = {}
+                    injectNames.forEach((name, i) => {
+                        this.injectedProps[name] = injectedProps[i]
+                    })
+                    this.root = createRoot(this.$element[0])
+                }
+                render() {
+                    if (!this.isDestroyed && this.root) {
+                        this.root.render(
+                            <React.StrictMode>
+                                <Class {...(this.props as Props)} {...this.injectedProps} />
+                            </React.StrictMode>
+                        )
+                    }
+                }
+                componentWillUnmount() {
+                    this.isDestroyed = true
+                    if (this.root) {
+                        this.root.unmount()
+                    }
+                }
+            }
+        ]
+    }
 }
