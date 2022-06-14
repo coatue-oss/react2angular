@@ -5,7 +5,8 @@
   "main": "./build/index.js",
   "typings": "./build/index.d.ts",
   "scripts": {
-    "build": "swc index.tsx -o ./build/index.js"
+    "build": "swc index.tsx -o ./build/index.js",
+    "test": "jest --config jest.config.js"
   },
   "repository": {
     "type": "git",
@@ -38,12 +39,24 @@
   "devDependencies": {
     "@swc/cli": "^0.1.57",
     "@swc/core": "^1.2.198",
+    "@swc/jest": "^0.2.21",
     "@types/angular": "^1.8.4",
+    "@types/angular-mocks": "^1.7.1",
+    "@types/jest": "^28.1.1",
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
     "angular": "^1.8.3",
+    "angular-mocks": "^1.8.3",
+    "jest": "^28.1.1",
+    "jest-environment-jsdom": "^28.1.1",
     "ngcomponent": "^4.1.0",
+    "ngimport": "^1.0.0",
+    "prop-types": "^15.8.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
+  },
+  "dependencies": {
+    "angular": ">=1.5",
+    "ngcomponent": "^4.1.0"
   }
 }
