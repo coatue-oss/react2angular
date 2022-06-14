@@ -1,10 +1,5 @@
-.idea
-.DS_Store
-.circleci
 node_modules
-test.js
-test.d.ts
-test.map
-karma.conf.js
-logo.png
-logo.psd
+.prettierrc.js
+.swcrc
+src
+jest.config.js
