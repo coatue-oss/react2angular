@@ -1,7 +1,7 @@
 {
     "name": "react-to-angularjs",
     "version": "1.0.0",
-    "description": "The easiest way to embed React 18 components in AngularJS 1 apps!",
+    "description": "The easiest way to embed React 18 components in AngularJS apps!",
     "main": "./build/index.js",
     "typings": "./build/index.d.ts",
     "scripts": {
