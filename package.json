@@ -2,10 +2,10 @@
     "name": "react18-to-angularjs",
     "version": "1.0.0",
     "description": "The easiest way to embed React 18 components in AngularJS apps!",
-    "main": "./build/index.js",
-    "typings": "./build/index.d.ts",
+    "main": "./dist/index.js",
+    "typings": "./dist/index.d.ts",
     "scripts": {
-        "build": "swc ./src/index.tsx -s true -o ./build/index.js",
+        "build": "swc ./src/index.tsx -s true -o ./dist/index.js",
         "test": "jest --config jest.config.js"
     },
     "repository": {
@@ -58,5 +58,8 @@
     "dependencies": {
         "angular": ">=1.5",
         "ngcomponent": "^4.1.0"
-    }
+    },
+    "files": [
+        "dist"
+    ]
 }
