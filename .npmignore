@@ -3,3 +3,4 @@ node_modules
 .swcrc
 src
 jest.config.js
+tsconfig.json
