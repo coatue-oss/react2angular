@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "The easiest way to embed React 18 components in AngularJS apps!",
     "main": "./dist/index.js",
-    "typings": "./dist/index.d.ts",
+    "typings": "./types/index.d.ts",
     "scripts": {
         "build": "swc ./src/index.tsx -s true -o ./dist/index.js",
         "test": "jest --config jest.config.js"
@@ -60,6 +60,7 @@
         "ngcomponent": "^4.1.0"
     },
     "files": [
-        "dist"
+        "dist",
+        "types"
     ]
 }

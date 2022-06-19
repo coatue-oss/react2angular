@@ -16,7 +16,7 @@ import { $http, $q, $rootScope } from 'ngimport';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import { Simulate } from 'react-dom/test-utils';
-import { react2angular } from './';
+import { react2angular } from '.';
 
 class TestOne extends React.Component<Props> {
     render() {
