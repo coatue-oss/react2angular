@@ -1,6 +1,6 @@
 import { IAugmentedJQuery } from 'angular';
 import NgComponent from 'ngcomponent';
-import * as React from 'react';
+import { ComponentType, StrictMode } from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import type { WrapperFunction } from '../types';
 
@@ -14,11 +14,11 @@ type Bindings<K> = Record<keyof K, '<'>;
  * Wraps a React component in Angular. Returns a new Angular component.
  *
  */
-export const react2angular = <Props extends Record<string, unknown>>(
-    Class: React.ComponentType<Props>,
+export function react2angular<Props extends Record<string, unknown>>(
+    Class: ComponentType<Props>,
     bindingNames: (keyof Props)[] | null = null,
     injectNames: string[] = [],
-): ReturnType<WrapperFunction<Props>> => {
+): ReturnType<WrapperFunction<Props>> {
     const names = bindingNames || (Class.propTypes && (Object.keys(Class.propTypes) as (keyof Props)[])) || [];
 
     const bindings = names.reduce<Bindings<Props>>((acc, curr) => {
@@ -49,9 +49,9 @@ export const react2angular = <Props extends Record<string, unknown>>(
                 render() {
                     if (!this.isDestroyed && this.root) {
                         this.root.render(
-                            <React.StrictMode>
+                            <StrictMode>
                                 <Class {...(this.props as Props)} {...this.injectedProps} />
-                            </React.StrictMode>,
+                            </StrictMode>,
                         );
                     }
                 }
@@ -64,4 +64,4 @@ export const react2angular = <Props extends Record<string, unknown>>(
             },
         ],
     };
-};
+}

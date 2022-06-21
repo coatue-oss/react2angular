@@ -1,3 +1,5 @@
+/// <reference types="jest-extended" />
+
 import { IComponentOptions } from 'angular';
 
 type WrapperFunction<T> = (props: {

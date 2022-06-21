@@ -1,6 +1,19 @@
 module.exports = {
-    transform: {
-      "^.+\\.(t|j)sx?$": ["@swc/jest"],
-    },
+    setupFiles: ['./src/setup.ts'],
+    setupFilesAfterEnv: ["jest-extended/all"],
     testEnvironment: 'jsdom',
+    transform: {
+      '.*\\.(tsx?)$': [
+        '@swc/jest',
+        {
+          jsc: {
+            transform: {
+              react: {
+                runtime: 'automatic',
+              },
+            },
+          },
+        },
+      ],
+    },
   };
