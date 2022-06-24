@@ -1,5 +1,4 @@
 import {
-    bootstrap,
     element as $,
     IAugmentedJQuery,
     ICompileService,
@@ -8,17 +7,18 @@ import {
     IHttpService,
     IQService,
     IScope,
-    module,
 } from 'angular';
-import * as angular from 'angular';
+import 'angular';
 import 'angular-mocks';
 import { $http, $q, $rootScope } from 'ngimport';
 import * as PropTypes from 'prop-types';
-import * as React from 'react';
-import { Simulate } from 'react-dom/test-utils';
-import { react2angular } from './';
+import { act, Simulate } from 'react-dom/test-utils';
+import { react2angular } from '.';
+import { Component, FunctionComponent, PropsWithChildren } from 'react';
 
-class TestOne extends React.Component<Props> {
+let angular = window.angular;
+
+class TestOne extends Component<Props> {
     render() {
         return (
             <div>
@@ -32,7 +32,7 @@ class TestOne extends React.Component<Props> {
     componentWillUnmount() {}
 }
 
-const TestTwo: React.FunctionComponent<Props> = (props) => (
+const TestTwo: FunctionComponent<Props> = (props) => (
     <div>
         <p>Foo: {props.foo}</p>
         <p>Bar: {props.bar.join(',')}</p>
@@ -41,15 +41,15 @@ const TestTwo: React.FunctionComponent<Props> = (props) => (
     </div>
 );
 
-const TestThree: React.FunctionComponent = () => <div>Foo</div>;
+const TestThree: FunctionComponent = () => <div>Foo</div>;
 
-class TestFour extends React.Component<Props> {
+class TestFour extends Component<Props> {
     render() {
         return <div>Foo</div>;
     }
 }
 
-class TestFive extends React.Component<Props> {
+class TestFive extends Component<Props> {
     static propTypes = {
         bar: PropTypes.array.isRequired,
         baz: PropTypes.func.isRequired,
@@ -83,7 +83,7 @@ type DIProps = {
     testSixService: TestSixService;
 };
 
-class TestSix extends React.Component<Props & DIProps> {
+class TestSix extends Component<Props & DIProps> {
     state = {
         elementText: '',
         result: '',
@@ -106,7 +106,9 @@ class TestSix extends React.Component<Props & DIProps> {
         this.setState({
             elementText: this.props.$element.find('span').text(),
         });
-        this.props.$http.get('https://example.com/').then((_) => this.setState({ result: _.data }));
+        this.props.$http.get('https://example.com/').then((_) => {
+            this.setState({ result: _.data });
+        });
         this.props.testSixService.foo().then((_) => this.setState({ testSixService: _ }));
     }
 }
@@ -122,7 +124,7 @@ interface TestEightProps {
     values: string[];
 }
 
-class TestEight extends React.Component<TestEightProps> {
+class TestEight extends Component<TestEightProps> {
     render() {
         this.props.onRender();
         return this.props.values.map((value, index) => <div key={index}>{value}</div>);
@@ -166,31 +168,44 @@ const TestAngularSix = react2angular(TestSix, ['foo'], ['$http', '$element', 'te
 const TestAngularSeven = react2angular(TestSeven, null, ['foo']);
 const TestAngularEight = react2angular(TestEight, ['values', 'onComponentWillUnmount', 'onRender', 'onChange']);
 
-module('test', ['bcherny/ngimport'])
-    .component('testAngularOne', TestAngularOne)
-    .component('testAngularTwo', TestAngularTwo)
-    .component('testAngularThree', TestAngularThree)
-    .component('testAngularFour', TestAngularFour)
-    .service('testSixService', ['$q', TestSixService])
-    .constant('foo', 'CONSTANT FOO')
-    .component('testAngularSix', TestAngularSix)
-    .component('testAngularSeven', TestAngularSeven)
-    .component('testAngularEight', TestAngularEight)
-    .component('testAngularEightWrapper', new TestEightWrapper());
-
-bootstrap($(document), ['test'], { strictDi: true });
-type Props = React.PropsWithChildren<{
+type Props = PropsWithChildren<{
     bar: boolean[];
     baz(value: number): any;
     foo: number;
 }>;
 
-jest.mock('angular', () => ({
-    ...jest.requireActual('angular'),
-}));
-
 describe('react2angular', () => {
-    let $compile: ICompileService;
+
+    let compile: ICompileService;
+    let scope: IScope;
+    let element: JQLite | undefined;
+    let app;
+
+    beforeAll(() => {
+        app = angular.module('app', ['bcherny/ngimport']);
+        app.component('testAngularOne', TestAngularOne)
+            .component('testAngularTwo', TestAngularTwo)
+            .component('testAngularThree', TestAngularThree)
+            .component('testAngularFour', TestAngularFour)
+            .service('testSixService', ['$q', TestSixService])
+            .constant('foo', 'CONSTANT FOO')
+            .component('testAngularSix', TestAngularSix)
+            .component('testAngularSeven', TestAngularSeven)
+            .component('testAngularEight', TestAngularEight)
+            .component('testAngularEightWrapper', new TestEightWrapper());
+    })
+
+    beforeEach(() => {
+        angular.mock.module(app.name);
+    });
+
+    beforeEach(() => {
+        angular.mock.inject(($rootScope, $compile) => {
+            scope = $rootScope.$new();
+            compile = $compile;
+            element = undefined;
+        });
+    });
 
     describe('initialization', () => {
         it('should give an angular component', () => {
@@ -239,205 +254,251 @@ describe('react2angular', () => {
     });
 
     describe('react classes', () => {
-        it.skip('should render', () => {
+
+        it('should render', async () => {
             const scope = Object.assign($rootScope.$new(true), {
                 bar: [true, false],
                 baz: (value: number) => value + 1,
                 foo: 1,
             });
-            const element = $(`<test-angular-one foo="foo" bar="bar" baz="baz"></test-angular-one>`);
-            $compile(element)(scope);
+
+            act( () => {
+                element = compile('<test-angular-one foo="foo" bar="bar" baz="baz"></test-angular-one>')(scope);
+            });
             $rootScope.$apply();
-            expect(element.find('p').length).toBe(3);
+
+            expect(element).toBeDefined();
+            expect(element!.find('p').length).toBe(3);
         });
 
-        it.skip('should render (even if the component takes no props)', () => {
+        it('should render (even if the component takes no props)', async () => {
             const scope = $rootScope.$new(true);
-            const element = $(`<test-angular-four></test-angular-four>`);
-            $compile(element)(scope);
+            await act(async () => {
+                element = compile('<test-angular-four></test-angular-four>')(scope);
+            });
             $rootScope.$apply();
-            expect(element.text()).toBe('Foo');
+
+            expect(element).toBeDefined();
+            expect(element!.text()).toBe('Foo');
         });
 
-        it.skip('should update', () => {
+        it('should update', async () => {
             const scope = Object.assign($rootScope.$new(true), {
                 bar: [true, false],
                 baz: (value: number) => value + 1,
                 foo: 1,
             });
-            const element = $(`<test-angular-one foo="foo" bar="bar" baz="baz"></test-angular-one>`);
-            $compile(element)(scope);
+            await act(async () => {
+                element = compile('<test-angular-one foo="foo" bar="bar" baz="baz"></test-angular-one>')(scope);
+            });
             $rootScope.$apply();
-            expect(element.find('p').eq(1).text()).toBe('Bar: true,false');
+
+            expect(element).toBeDefined();
+            expect(element!.find('p').eq(1).text()).toBe('Bar: true,false');
             scope.$apply(() => (scope.bar = [false, true, true]));
-            expect(element.find('p').eq(1).text()).toBe('Bar: false,true,true');
+
+            await act(async () => {
+                scope.$apply(() => (scope.bar = [false, true, true]));
+            });
+            expect(element!.find('p').eq(1).text()).toBe('Bar: false,true,true');
         });
 
-        it.skip('should destroy', () => {
+        it('should destroy', async () => {
             const scope = Object.assign($rootScope.$new(true), {
                 bar: [true, false],
                 baz: (value: number) => value + 1,
                 foo: 1,
             });
-            const element = $(`<test-angular-one foo="foo" bar="bar" baz="baz"></test-angular-one>`);
-            $compile(element)(scope);
+            await act(async () => {
+                element = compile('<test-angular-one foo="foo" bar="bar" baz="baz"></test-angular-one>')(scope);
+            });
             $rootScope.$apply();
-            spyOn(TestOne.prototype, 'componentWillUnmount');
+            jest.spyOn(TestOne.prototype, 'componentWillUnmount');
             scope.$destroy();
+
+            expect(element).toBeDefined();
             expect(TestOne.prototype.componentWillUnmount).toHaveBeenCalled();
         });
 
-        it.skip('should take callbacks', () => {
-            const baz = jasmine.createSpy('baz');
+        it('should take callbacks', async () => {
+            const baz = jest.fn();
             const scope = Object.assign($rootScope.$new(true), {
                 bar: [true, false],
                 baz,
                 foo: 1,
             });
-            const element = $(`<test-angular-one foo="foo" bar="bar" baz="baz"></test-angular-one>`);
-            $compile(element)(scope);
+            await act(async () => {
+                element = compile('<test-angular-one foo="foo" bar="bar" baz="baz"></test-angular-one>')(scope);
+            });
             $rootScope.$apply();
-            Simulate.click(element.find('p').eq(2)[0]);
+
+            expect(element).toBeDefined();
+            Simulate.click(element!.find('p').eq(2)[0]);
             expect(baz).toHaveBeenCalledWith(42);
         });
 
-        // TODO: support children
-        it.skip('should not support children', () => {
+        it('should not support children', async () => {
             const scope = Object.assign($rootScope.$new(true), {
                 bar: [true, false],
                 baz: (value: number) => value + 1,
                 foo: 1,
             });
-            const element = $(
-                `<test-angular-one foo="foo" bar="bar" baz="baz"><span>Transcluded</span></test-angular-one>`,
-            );
-            $compile(element)(scope);
+            await act(async () => {
+                element = compile(
+                    '<test-angular-one foo="foo" bar="bar" baz="baz"><span>Transcluded</span></test-angular-one>',
+                )(scope);
+            });
             $rootScope.$apply();
-            expect(element.find('span').length).toBe(0);
+
+            expect(element).toBeDefined();
+            expect(element!.find('span').length).toBe(0);
         });
 
-        it.skip('should take injections, which override props', () => {
-            spyOn($http, 'get').and.returnValue($q.resolve({ data: '$http response' }));
+        it('should take injections, which override props', async () => {
+            jest.spyOn($http, 'get').mockReturnValue($q.resolve({ data: '$http response' }));
             const scope = Object.assign($rootScope.$new(true), {
                 foo: 'FOO',
             });
 
-            const element1 = $(`<test-angular-six foo="foo"></test-angular-six>`);
-            $compile(element1)(scope);
+            let element1;
+            await act(async () => {
+                element1 = compile('<test-angular-six foo="foo"></test-angular-six>')(scope);
+            });
 
-            const element2 = $(`<test-angular-seven foo="foo"></test-angular-seven>`);
-            $compile(element2)(scope);
+            let element2;
+            await act(async () => {
+                element2 = compile('<test-angular-seven foo="foo"></test-angular-seven>')(scope);
+            });
 
-            $rootScope.$apply();
+            await act(async () => {
+                $rootScope.$apply();
+            });
 
+            expect(element1).toBeDefined();
             expect($http.get).toHaveBeenCalledWith('https://example.com/');
-            expect(element1.find('p').eq(0).text()).toBe('$http response', '$http is injected');
-            expect(element1.find('p').eq(1).text()).toBe('$element result', '$element is injected');
-            expect(element1.find('p').eq(2).text()).toBe('testSixService result', 'testSixService is injected');
-            expect(element1.find('p').eq(3).text()).toBe('CONSTANT FOO', 'injections should override props');
-            expect(element2.find('p').text()).toBe('CONSTANT FOO', 'injections should override props');
+            expect(element1.find('p').eq(0).text()).toBe('$http response');
+            expect(element1.find('p').eq(1).text()).toBe('$element result');
+            expect(element1.find('p').eq(2).text()).toBe('testSixService result');
+            expect(element1.find('p').eq(3).text()).toBe('CONSTANT FOO');
+            expect(element2).toBeDefined();
+            expect(element2.find('p').text()).toBe('CONSTANT FOO');
         });
     });
 
     describe('react stateless components', () => {
-        it.skip('should render', () => {
+        it('should render', async () => {
             const scope = Object.assign($rootScope.$new(true), {
                 bar: [true, false],
                 baz: (value: number) => value + 1,
                 foo: 1,
             });
-            const element = $(`<test-angular-two foo="foo" bar="bar" baz="baz"></test-angular-two>`);
-            $compile(element)(scope);
+            await act(async () => {
+                element = compile('<test-angular-two foo="foo" bar="bar" baz="baz"></test-angular-two>')(scope);
+            });
             $rootScope.$apply();
-            expect(element.find('p').length).toBe(3);
+            expect(element).toBeDefined();
+            expect(element!.find('p').length).toBe(3);
         });
 
-        it.skip('should render (even if the component takes no props)', () => {
+        it('should render (even if the component takes no props)', async () => {
             const scope = $rootScope.$new(true);
-            const element = $(`<test-angular-three></test-angular-three>`);
-            $compile(element)(scope);
+
+            await act(async () => {
+                element = compile('<test-angular-three></test-angular-three>')(scope);
+            });
+
             $rootScope.$apply();
-            expect(element.text()).toBe('Foo');
+            expect(element).toBeDefined();
+            expect(element!.text()).toBe('Foo');
         });
 
-        it.skip('should update', () => {
+        it('should update', async () => {
             const scope = Object.assign($rootScope.$new(true), {
                 bar: [true, false],
                 baz: (value: number) => value + 1,
                 foo: 1,
             });
-            const element = $(`<test-angular-two foo="foo" bar="bar" baz="baz"></test-angular-two>`);
-            $compile(element)(scope);
+            await act(async () => {
+                element = compile('<test-angular-two foo="foo" bar="bar" baz="baz"></test-angular-two>')(scope);
+            });
             $rootScope.$apply();
-            expect(element.find('p').eq(1).text()).toBe('Bar: true,false');
-            scope.$apply(() => (scope.bar = [false, true, true]));
-            expect(element.find('p').eq(1).text()).toBe('Bar: false,true,true');
+            expect(element).toBeDefined();
+            expect(element!.find('p').eq(1).text()).toBe('Bar: true,false');
+
+            await act(async () => {
+                scope.$apply(() => (scope.bar = [false, true, true]));
+            });
+
+            expect(element!.find('p').eq(1).text()).toBe('Bar: false,true,true');
         });
 
-        // TODO: figure out how to test this
-        it.skip('should destroy', () => {});
-
-        it.skip('should take callbacks', () => {
-            const baz = jasmine.createSpy('baz');
+        it('should take callbacks', async () => {
+            const baz = jest.fn();
             const scope = Object.assign($rootScope.$new(true), {
                 bar: [true, false],
                 baz,
                 foo: 1,
             });
-            const element = $(`<test-angular-two foo="foo" bar="bar" baz="baz"></test-angular-two>`);
-            $compile(element)(scope);
+            await act(async () => {
+                element = compile('<test-angular-two foo="foo" bar="bar" baz="baz"></test-angular-two>')(scope);
+            });
+            expect(element).toBeDefined();
+
             $rootScope.$apply();
-            Simulate.click(element.find('p').eq(2)[0]);
+            Simulate.click(element!.find('p').eq(2)[0]);
+            
             expect(baz).toHaveBeenCalledWith(42);
         });
 
-        // TODO: support children
-        it.skip('should not support children', () => {
+        it('should not support children', async () => {
             const scope = Object.assign($rootScope.$new(true), {
                 bar: [true, false],
                 baz: (value: number) => value + 1,
                 foo: 1,
             });
-            const element = $(
-                `<test-angular-two foo="foo" bar="bar" baz="baz"><span>Transcluded</span></test-angular-two>`,
-            );
-            $compile(element)(scope);
+            await act(async () => {
+                element = compile('<test-angular-two foo="foo" bar="bar" baz="baz"><span>Transcluded</span></test-angular-two>')(scope);
+            });
             $rootScope.$apply();
-            expect(element.find('span').length).toBe(0);
+
+            expect(element).toBeDefined();
+            expect(element!.find('span').length).toBe(0);
         });
 
-        it.skip('should not call render after component unmount', () => {
-            const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount');
-            const renderSpy = jasmine.createSpy('render');
+        it('should not call render after component unmount', async () => {
+            const componentWillUnmountSpy = jest.fn();
+            const renderSpy = jest.fn();
 
             const scope = Object.assign($rootScope.$new(true), {
                 onComponentWillUnmount: componentWillUnmountSpy,
                 onRender: renderSpy,
                 values: ['val1'],
             });
-            const element = $(`
-              <test-angular-eight-wrapper
-                on-render="onRender"
-                on-component-will-unmount="onComponentWillUnmount"
-                values="values">
-              </test-angular-eight-wrapper>
-            `);
 
-            $compile(element)(scope);
+            await act(async () => {
+                element = compile(`
+                <test-angular-eight-wrapper
+                  on-render="onRender"
+                  on-component-will-unmount="onComponentWillUnmount"
+                  values="values">
+                </test-angular-eight-wrapper>
+              `)(scope);
+            });
 
-            const childScope = angular.element(element.find('test-angular-eight')).scope();
+            expect(element).toBeDefined();
+            const childScope = angular.element(element!.find('test-angular-eight')).scope();
             $rootScope.$apply();
 
             // Erase first render caused on apply
-            renderSpy.calls.reset();
+            renderSpy.mockRestore();
 
             // Destroy child component to cause unmount
             childScope.$destroy();
 
             // Make sure render on child was not called after unmount
-            expect(componentWillUnmountSpy.calls.count()).toEqual(1);
-            expect(renderSpy.calls.count()).toEqual(0);
-            expect(componentWillUnmountSpy).not.toHaveBeenCalledBefore(renderSpy);
+            expect(componentWillUnmountSpy).toHaveBeenCalledTimes(1);
+            expect(renderSpy).toHaveBeenCalledTimes(0);
+            expect(componentWillUnmountSpy).toHaveBeenCalledBefore(renderSpy);
         });
     });
 });
