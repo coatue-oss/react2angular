@@ -25,7 +25,6 @@ class TestOne extends React.Component<Props> {
       {this.props.children}
     </div>
   }
-  componentWillUnmount() { }
 }
 
 const TestTwo: React.FunctionComponent<Props> = (props: Props) =>

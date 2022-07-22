@@ -15,12 +15,12 @@ import { createRoot } from 'react-dom/client'
  *   ```
  */
 export function react2angular<Props>(
-  Class: React.ComponentType<Props>,
+  ReactComponent: React.ComponentType<Props>,
   bindingNames: (keyof Props)[] | null = null,
   injectNames: string[] = []
 ): IComponentOptions {
   const names = bindingNames
-    || (Class.propTypes && Object.keys(Class.propTypes) as (keyof Props)[])
+    || (ReactComponent.propTypes && Object.keys(ReactComponent.propTypes) as (keyof Props)[])
     || []
 
   return {
@@ -48,7 +48,7 @@ export function react2angular<Props>(
       render() {
         if (!this.isDestroyed) {
           this.root.render(
-            <Class {...this.props} {...this.injectedProps as any} />
+            <ReactComponent {...this.props} {...this.injectedProps as any} />
           )
         }
       }
