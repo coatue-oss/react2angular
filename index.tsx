@@ -38,6 +38,7 @@ export function react2angular<Props>(
         injectNames.forEach((name, i) => {
           this.injectedProps[name] = injectedProps[i]
         })
+        this.root = createRoot($element[0])
       }
       $onInit() {
         names.forEach((name) => {
@@ -46,8 +47,6 @@ export function react2angular<Props>(
       }
       render() {
         if (!this.isDestroyed) {
-          console.log('redenring with createroot api')
-          this.root = createRoot(this.$element[0])
           this.root.render(
             <Class {...this.props} {...this.injectedProps as any} />
           )
