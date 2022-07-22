@@ -1,6 +1,6 @@
 {
   "name": "react2angular",
-  "version": "5.4.0",
+  "version": "7.0.0",
   "description": "The easiest way to embed React components in Angular 1 apps!",
   "main": "index.js",
   "main:esnext": "index.es2015.js",
@@ -37,12 +37,12 @@
   "homepage": "https://github.com/coatue-oss/react2angular#readme",
   "peerDependencies": {
     "@types/angular": ">=1.5",
-    "@types/prop-types": ">=15",
-    "@types/react": ">=16",
-    "@types/react-dom": ">=16",
+    "@types/prop-types": ">=18",
+    "@types/react": ">=18",
+    "@types/react-dom": ">=18",
     "prop-types": ">=15",
-    "react": ">=15",
-    "react-dom": ">=15"
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
     "@types/angular": "^1.6.54",
@@ -50,8 +50,8 @@
     "@types/jasmine": "^3.3.9",
     "@types/jquery": "^3.3.29",
     "@types/prop-types": "^15.7.0",
-    "@types/react": "^16.8.6",
-    "@types/react-dom": "^16.8.2",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
     "angular-mocks": "1.6.9",
     "angular-resource": "^1.7.7",
     "browserify": "^16.2.3",
