@@ -5,8 +5,11 @@
   "main": "index.js",
   "main:esnext": "index.es2015.js",
   "typings": "index.d.ts",
+  "browser": "index.browser.js",
   "scripts": {
+    "prebuild": "npm run clean; tsc -d -t es6 -m es6 && mv ./index.js ./index.es6.js",
     "build": "npm run clean && npm run lint && tsc -d -t es2015 && mv ./index.js ./index.es2015.js && tsc -t es5",
+    "postbuild": "rollup -c",
     "clean": "rimraf ./*.d.ts && rimraf ./*.map",
     "lint": "tslint --fix -p ./tsconfig.json index.tsx test.tsx",
     "pretest": "npm run build",
@@ -69,15 +72,19 @@
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "rimraf": "^2.6.3",
+    "rollup": "^0.45.1",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-replace": "^1.1.1",
     "rollupify": "^0.5.1",
     "tslint": "^5.13.1",
     "typescript": "^3.3.3333",
     "watchify": "^3.11.1"
   },
   "dependencies": {
-    "@types/lodash.frompairs": "^4.0.5",
+    "@types/lodash-es": "^4.17.6",
     "angular": ">=1.5",
-    "lodash.frompairs": "^4.0.1",
-    "ngcomponent": "^4.1.0"
+    "lodash-es": "^4.17.21",
+    "tlvince-ngcomponent": "3.0.7"
   }
 }
