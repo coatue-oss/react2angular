@@ -5,3 +5,4 @@ node_modules
 *.js
 *.map
 !karma.conf.js
+!rollup.config.js
