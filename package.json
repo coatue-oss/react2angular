@@ -14,7 +14,8 @@
     "test": "karma start --single-run",
     "tdd": "npm-run-all -pr watch:*",
     "watch:ts": "tsc -w",
-    "watch:test": "karma start"
+    "watch:test": "karma start",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -79,5 +80,8 @@
     "angular": ">=1.5",
     "lodash.frompairs": "^4.0.1",
     "ngcomponent": "^4.1.0"
-  }
+  },
+  "precommit": [
+    "build"
+  ]
 }
