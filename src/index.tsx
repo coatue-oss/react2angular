@@ -2,7 +2,7 @@ import { IAugmentedJQuery } from 'angular';
 import NgComponent from 'ngcomponent';
 import { ComponentType, StrictMode } from 'react';
 import { createRoot, Root } from 'react-dom/client';
-import type { WrapperFunction } from '../types';
+import type { react2angular } from '../types';
 
 const defaultBinding = '<';
 
@@ -18,7 +18,7 @@ export function react2angular<Props extends Record<string, unknown>>(
     Class: ComponentType<Props>,
     bindingNames: (keyof Props)[] | null = null,
     injectNames: string[] = [],
-): ReturnType<WrapperFunction<Props>> {
+): ReturnType<react2angular<Props>> {
     const names = bindingNames || (Class.propTypes && (Object.keys(Class.propTypes) as (keyof Props)[])) || [];
 
     const bindings = names.reduce<Bindings<Props>>((acc, curr) => {

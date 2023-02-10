@@ -2,7 +2,7 @@
 
 import { IComponentOptions } from 'angular';
 
-export type WrapperFunction<T> = (props: {
+export type react2angular<T> = (props: {
     Class: React.ComponentType<T>;
     bindingNames: (keyof T)[] | null;
     injectNames?: string[];
